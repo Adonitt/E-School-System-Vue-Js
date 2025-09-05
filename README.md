@@ -34,3 +34,6 @@ Vue Router
 Bootstrap 5
  / TailwindCSS
  – UI styling
+
+Rest Api Repo:
+https://github.com/Adonitt/E-School-System-RestApi
