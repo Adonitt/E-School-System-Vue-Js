@@ -1,5 +1,5 @@
 <script setup>
-import {ref, onMounted, computed} from "vue";
+import {computed, onMounted, ref} from "vue";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {useAuthStore} from "@/stores/authStore.js";
 import AdminService from "@/services/adminService.js";
@@ -178,11 +178,23 @@ console.log(profile)
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Is Active</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.active }}</div>
+                  <div class="col-lg-9 col-md-8">
+    <span
+        class="badge"
+        :class="profile?.active ? 'bg-success' : 'bg-danger'">
+    {{ profile?.active ? 'Yes' : 'No' }}
+  </span>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Accept Terms And Conditions</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.acceptTermsAndConditions }}</div>
+                  <div class="col-lg-9 col-md-8">
+  <span
+      class="badge"
+      :class="profile?.acceptTermsAndConditions ? 'bg-success' : 'bg-danger'">
+    {{ profile?.acceptTermsAndConditions ? 'Yes' : 'No' }}
+  </span>
+                  </div>
                 </div>
               </div>
               <div v-if="authStore.loggedInUser.role === 'TEACHER'"
@@ -240,7 +252,13 @@ console.log(profile)
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Graduated?</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.graduated }}</div>
+                  <div class="col-lg-9 col-md-8">
+  <span
+      class="badge"
+      :class="profile?.graduated ? 'bg-success' : 'bg-danger'">
+    {{ profile?.graduated ? 'Yes' : 'No' }}
+  </span>
+                  </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Is Active Student?</div>

@@ -18,6 +18,26 @@ class AdminService {
         return res.data
     }
 
+    async createAdmin(newAdmin) {
+        const res = await client.post('/admin', newAdmin, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+        return res.data;
+    }
+
+    async modifyAdmin(id, newAdmin) {
+        const res = await client.put(`/admin/${newAdmin.id}`, newAdmin, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            }
+        )
+        return res.status === 200 ? res.data : null;
+    }
+
+    async removeAdmin(id) {
+        const res = await client.delete(`/admin/${id}`)
+        return res.data === 204
+    }
+
 }
 
 export default new AdminService();
