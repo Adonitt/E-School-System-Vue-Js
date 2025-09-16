@@ -1,6 +1,6 @@
 <script setup>
 
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import AdminService from "@/services/adminService.js";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {useAuthStore} from "@/stores/authStore.js";
@@ -8,6 +8,9 @@ import {useLoading} from "@/composables/useLoading.js";
 import {DataTable} from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
+import AppButton from "@/components/app/AppButton.vue";
+import toast from "bootstrap/js/src/toast.js";
+import {useAppToast} from "@/composables/useAppToast.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -27,11 +30,35 @@ const loadAdmins = async () => {
   })
 }
 
+const getFullImagePath = (path) => {
+  if (!path) return null;
+  return "http://localhost:8080/" + path;
+}
+
+const {showSuccess, showDialog, showError} = useAppToast()
+
+const onDeleteAdmin = async (id) => {
+  const result = await showDialog('Are you sure you want to delete this admin?')
+
+  if (result.isConfirmed) {
+    try {
+      await withLoading(async () => {
+        const res = await AdminService.removeAdmin(id);
+        showSuccess("Admin with id: " + id + " deleted successfully.")
+        await loadAdmins()
+      })
+    } catch (err) {
+      showError(err.response?.data?.message || 'An unexpected error occurred.')
+    }
+  }
+}
+
+
 onMounted(async () => {
   await loadAdmins()
   new DataTablesCore("#adminTable")
+  console.log("img url " + import.meta.env.VITE_IMG_URL)
 })
-
 
 </script>
 
@@ -40,18 +67,17 @@ onMounted(async () => {
 
 
   <div class="card mt-3">
-      <a>
-        <button type="button" class="btn btn-outline-primary float-end m-3">
-          Create a new Administrator
-        </button>
-      </a>
+    <a>
+      <router-link :to="{name:'create-admin'}" class="btn btn-outline-primary float-end m-3">
+        Create a new Administrator
+      </router-link>
+    </a>
     <div class="card-body">
       <h5 class="card-title">Administrators List</h5>
 
-      <!-- Responsive wrapper -->
       <div class="table-responsive">
         <table class="table table-striped table-hover" id="adminTable">
-          <thead class="table-dark">
+          <thead>
           <tr>
             <th scope="col">Id</th>
             <th scope="col">Photo</th>
@@ -66,8 +92,16 @@ onMounted(async () => {
           <tr v-for="admin in admins" :key="admin.id">
             <td>{{ admin.id }}</td>
             <td>
-              <img :src="admin.photo" alt="Photo" class="img-thumbnail" style="width: 50px; height: 50px;">
+              <img
+                  v-if="admin.photo"
+                  :src="getFullImagePath(admin.photo)"
+                  alt="Admin Photo"
+                  class="rounded-circle"
+                  width="50"
+                  height="50"
+              />
             </td>
+
             <td>{{ admin.name + " " + admin.surname }}</td>
             <td>{{ admin.email }}</td>
             <td>{{ admin.department }}</td>
@@ -77,13 +111,20 @@ onMounted(async () => {
                 <i class="bi bi-info-circle"></i>
               </router-link>
 
-              <router-link :to="{name:'edit-admin', params:{id:admin.id}}" class="btn btn-warning btn-sm me-1">
+              <router-link
+                  v-if="authStore.loggedInUser.id !== admin.id"
+                  :to="{name:'edit-admin', params:{id:admin.id}}"
+                  class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
               </router-link>
 
-              <button type="button" class="btn btn-danger btn-sm">
+              <app-button
+                  v-if="authStore.loggedInUser.id !== admin.id"
+                  class="btn btn-danger btn-sm"
+                  @click="onDeleteAdmin(admin.id)">
                 <i class="bi bi-trash"></i>
-              </button>
+              </app-button>
+
             </td>
           </tr>
           </tbody>

@@ -4,6 +4,10 @@ import {onMounted, ref} from "vue";
 import {useLoading} from "@/composables/useLoading.js";
 import AdminService from "@/services/adminService.js";
 import {useRoute, useRouter} from "vue-router";
+import {useAppToast} from "@/composables/useAppToast.js";
+import AdminListingView from "@/views/admin/AdminListingView.vue";
+import AppButton from "@/components/app/AppButton.vue";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const breadcrumbs = [
   {label: 'Dashboard', to: {name: 'home'}},
@@ -21,6 +25,28 @@ const loadAdmin = async (id) => {
   })
 }
 
+const toast = useAppToast()
+const onDeleteAdmin = async (id) => {
+  const result = await toast.showDialog("Are you sure you want to delete this admin?")
+  if (result.isConfirmed) {
+    try {
+      await withLoading(async () => {
+        const res = AdminService.removeAdmin(id)
+        toast.showSuccess("Admin with id: " + id + " deleted successfully")
+        await router.push({name: 'admins'})
+      })
+    } catch (err) {
+      throw err;
+    }
+  }
+}
+
+const getFullImagePath = (path) => {
+  if (!path) return null;
+  return "http://localhost:8080/" + path;
+}
+const authStore = useAuthStore()
+
 onMounted(() => {
   loadAdmin(route.params.id)
 })
@@ -31,12 +57,28 @@ onMounted(() => {
   Admin Details View
 
   <section class="section profile">
+    <div>
+      <div class="d-flex justify-content-center gap-2 mt-3">
+        <router-link class="btn btn-secondary  " :to="{name:'edit-admin', params:{id:route.params.id}}"
+                     v-if="authStore.loggedInUser.id !== +route.params.id"
+
+
+        >Update Admin
+        </router-link>
+
+        <button class="btn btn-danger flex" @click="onDeleteAdmin(admin.id) "
+                v-if="authStore.loggedInUser.id !== +route.params.id"
+
+        >Delete Candidate
+        </button>
+      </div>
+    </div>
     <div class="row">
       <div class="col-xl-4">
         <div class="card">
           <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
             <img
-                src="#"
+                :src="getFullImagePath(admin?.photo)"
                 alt="Profile"
                 class="rounded-circle"
                 height="150"
@@ -157,9 +199,10 @@ onMounted(() => {
   <span
       class="badge"
       :class="admin?.active? 'bg-success' : 'bg-danger'">
-    {{ admin?.active? 'Yes' : 'No' }}
+    {{ admin?.active ? 'Yes' : 'No' }}
   </span>
-                  </div>                </div>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Accept Terms And Conditions</div>
                   <div class="col-lg-9 col-md-8">
