@@ -45,6 +45,7 @@ const getFullImagePath = (path) => {
   if (!path) return null;
   return "http://localhost:8080/" + path;
 }
+
 const authStore = useAuthStore()
 
 onMounted(() => {
@@ -54,22 +55,18 @@ onMounted(() => {
 
 <template>
   <bread-crumb :items="breadcrumbs"/>
-  Admin Details View
 
   <section class="section profile">
     <div>
-      <div class="d-flex justify-content-center gap-2 mt-3">
+      <div class="d-flex justify-content-center gap-2 m-3 ">
         <router-link class="btn btn-secondary  " :to="{name:'edit-admin', params:{id:route.params.id}}"
-                     v-if="authStore.loggedInUser.id !== +route.params.id"
-
-
         >Update Admin
         </router-link>
 
         <button class="btn btn-danger flex" @click="onDeleteAdmin(admin.id) "
                 v-if="authStore.loggedInUser.id !== +route.params.id"
 
-        >Delete Candidate
+        >Delete Admin
         </button>
       </div>
     </div>

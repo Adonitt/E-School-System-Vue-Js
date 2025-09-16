@@ -26,7 +26,7 @@ class AdminService {
     }
 
     async modifyAdmin(id, newAdmin) {
-        const res = await client.put(`/admin/modify/${newAdmin.id}`, newAdmin, {
+        const res = await client.put(`/admin/modify/${id}`, newAdmin, {
                 headers: {'Content-Type': 'multipart/form-data'}
             }
         )

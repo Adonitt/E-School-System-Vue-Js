@@ -50,14 +50,10 @@ function onFileChange(e) {
 
 const onHandleSubmit = async () => {
   if (!userFormRef.value) return;
-
   const userData = userFormRef.value.user;
 
   const {photo, previewImage, ...rest} = adminExtra.value;
-  const finalData = {
-    ...userData,
-    ...rest
-  };
+  const finalData = {...userData, ...rest};
 
   const formData = new FormData();
   formData.append("dto", new Blob([JSON.stringify(finalData)], {type: "application/json"}));
@@ -65,7 +61,6 @@ const onHandleSubmit = async () => {
   if (photo) {
     formData.append("photo", photo);
   }
-
 
   await withLoading(async () => {
     try {

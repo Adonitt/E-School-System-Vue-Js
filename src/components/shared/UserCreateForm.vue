@@ -14,7 +14,6 @@ const user = ref({
   country: "",
   postalCode: "",
   phoneNumber: "",
-  role: "",
   notes: "",
   email: "",
   password: "",

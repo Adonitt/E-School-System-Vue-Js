@@ -75,14 +75,22 @@ const {withLoading} = useLoading();
 
 const onHandleSubmit = async () => {
 
+  const dto = {
+    ...userFormRef.value.user,
+    ...adminExtra.value
+  }
+
   const formData = new FormData();
-  formData.append("dto", new Blob([JSON.stringify(adminExtra.value)], {type: "application/json"}));
-  formData.append("photo", adminExtra.value.photo);
+  formData.append("dto", new Blob([JSON.stringify(dto)], {type: "application/json"}));
+
+  if (adminExtra.photo) {
+    formData.append("photo", adminExtra.photo);
+  }
 
   await withLoading(async () => {
     try {
-      await adminService.modifyAdmin(adminId.value, formData);
-      toast.showSuccess("Admin updated successfully.");
+      await adminService.modifyAdmin(adminId, formData);
+      toast.showSuccess("Admin with id: " + adminId + " updated successfully.");
       await router.push({name: "admins"});
     } catch (err) {
       toast.showError(err.response?.data?.message || "Error updating admin!");
@@ -100,14 +108,15 @@ const getFullImagePath = (path) => {
 function onFileChange(e) {
   const file = e.target.files[0];
   if (file) {
-    adminExtra.value.photo = file;
-    adminExtra.value.previewImage = file ? URL.createObjectURL(file) : null;
+    adminExtra.photo = file;
+    adminExtra.previewImage = file ? URL.createObjectURL(file) : null;
   }
 }
 
+
 onMounted(async () => {
   await loadAdminById(adminId)
-  console.log(adminId)
+  console.log(typeof (adminId))
 })
 
 </script>
@@ -127,7 +136,7 @@ onMounted(async () => {
           <div class="mb-3">
             <img
                 v-if="adminExtra.previewImage"
-                :src="getFullImagePath(adminExtra.previewImage)"
+                :src="getFullImagePath(adminExtra.previewImage) "
                 class="rounded-circle border"
                 width="150"
                 height="150"

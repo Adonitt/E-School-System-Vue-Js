@@ -11,6 +11,21 @@ class StudentService {
         const res = await client.get(`/students/${id}`)
         return res.data;
     }
+
+    async createStudent(newStudent) {
+        const res = await client.post('/students/create', newStudent, {
+            headers: {'Content-Type': 'multipart/form-data'}
+        })
+        return res.data;
+    }
+
+    async modifyStudent(id, newStudent) {
+        const res = await client.put(`/students/modify/${id}`, newStudent, {
+                headers: {'Content-Type': 'multipart/form-data'}
+            }
+        )
+        return res.status === 200 ? res.data : null;
+    }
 }
 
 export default new StudentService()

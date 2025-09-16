@@ -1,6 +1,6 @@
 <script setup>
 
-import {computed, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 import AdminService from "@/services/adminService.js";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {useAuthStore} from "@/stores/authStore.js";
@@ -9,7 +9,6 @@ import {DataTable} from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
 import AppButton from "@/components/app/AppButton.vue";
-import toast from "bootstrap/js/src/toast.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 
 DataTable.use(DataTablesCore);
@@ -112,7 +111,6 @@ onMounted(async () => {
               </router-link>
 
               <router-link
-                  v-if="authStore.loggedInUser.id !== admin.id"
                   :to="{name:'edit-admin', params:{id:admin.id}}"
                   class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
