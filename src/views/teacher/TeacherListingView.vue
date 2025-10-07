@@ -10,6 +10,8 @@ import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {useLoading} from "@/composables/useLoading.js";
 import AdminService from "@/services/adminService.js";
 import TeacherService from "@/services/teacherService.js";
+import {useAppToast} from "@/composables/useAppToast.js";
+import {useRouter} from "vue-router";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -34,8 +36,21 @@ const getFullImagePath = (path) => {
   return "http://localhost:8080/" + path;
 }
 
+const {showDialog, showError, showWarning, showSuccess} = useAppToast()
 const onDeleteTeacher = async (id) => {
+  const result = await showDialog('Are you sure you want to delete this admin?')
 
+  if (result.isConfirmed) {
+    try {
+      await withLoading(async () => {
+        const res = await TeacherService.removeTeacher(id);
+        showSuccess("Teacher with id: " + id + " deleted successfully.")
+        await loadTeachers()
+      })
+    } catch (err) {
+      showError(err.response?.data?.message || 'An unexpected error occurred.')
+    }
+  }
 }
 
 

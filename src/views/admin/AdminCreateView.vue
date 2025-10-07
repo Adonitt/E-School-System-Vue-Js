@@ -1,14 +1,13 @@
 <script setup>
 import {ref} from "vue";
-import UserCreateForm from "@/components/shared/UserCreateForm.vue";
+import UserCreateForm from "@/components/user-show/UserCreateForm.vue";
 import AppInput from "@/components/app/AppInput.vue";
 import AppSelect from "@/components/app/AppSelect.vue";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import AdminService from "@/services/adminService.js";
 import {useLoading} from "@/composables/useLoading.js";
-import {useAppToast} from "@/composables/useAppToast.js";
 import router from "@/router/index.js";
-import adminService from "@/services/adminService.js";
+import {useAppToast} from "@/composables/useAppToast.js";
 
 const breadcrumbs = [
   {label: "Dashboard", to: {name: "home"}},

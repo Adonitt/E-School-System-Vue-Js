@@ -1,7 +1,8 @@
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import AppInput from "@/components/app/AppInput.vue";
 import AppSelect from "@/components/app/AppSelect.vue";
+import {useEnumStore} from "@/stores/enumStore.js";
 
 const user = ref({
   personalNumber: "",
@@ -14,40 +15,27 @@ const user = ref({
   country: "",
   postalCode: "",
   phoneNumber: "",
+  role: "",
   notes: "",
-  email: "",
-  password: "",
-  confirmPassword: ""
+  email: ""
 });
 
+const enumStore = useEnumStore();
 
-const cities = [
-  {label: 'Prishtina', value: 'PRISHTINE'},
-  {label: 'Besiane', value: 'BESIANE'},
-  {label: 'Fushe Kosove', value: 'FUSHEKOSOVE'},
-  {label: 'Ferizaj', value: 'FERIZAJ'},
-  {label: 'Mitrovice', value: 'MITROVICE'},
-  {label: 'Vushtrri', value: 'VUSHTRRI'},
-  {label: 'Peje', value: 'PEJE'},
-  {label: 'Tirane', value: 'TIRANA'},
-  {label: 'Durres', value: 'DURRES'},
-  {label: 'Shkoder', value: 'SHKODER'},
-  {label: 'Shkup', value: 'SKOPJE'},
-  {label: 'Tetove', value: 'TETOVO'},
-  {label: 'Podgorica', value: 'PODGORICA'},
-];
-
-const countries = [
-  {label: 'Kosove', value: 'KOSOVO'},
-  {label: 'Shqiperi', value: "ALBANIA"},
-  {label: 'Maqedonia e Veriut', value: "NORTH_MACEDONIA"},
-  {label: 'Mali i Zi', value: "MONTENEGRO"}
-];
 
 const gender = [
   {label: 'Male', value: 'MALE'},
   {label: 'Female', value: 'FEMALE'},
 ];
+
+onMounted(() => {
+  enumStore.loadCountries();
+});
+
+watch(() => user.value.country, (newCountry) => {
+  enumStore.loadCities(newCountry);
+  user.value.city = "";
+});
 
 defineExpose({user});
 </script>
@@ -69,8 +57,22 @@ defineExpose({user});
 
           <AppInput v-model="user.birthDate" type="date" label="Birth Date" required id="birthdate"/>
           <AppInput id="address" v-model="user.address" label="Address" required placeholder="Enter Address"/>
-          <AppSelect id="country" v-model="user.country" label="Country" :options="countries" required/>
-          <AppSelect v-model="user.city" label="City" :options="cities" required id="city"/>
+          <AppSelect
+              id="country"
+              v-model="user.country"
+              label="Country"
+              :options="enumStore.countries"
+              required
+          />
+
+          <AppSelect
+              id="city"
+              v-model="user.city"
+              label="City"
+              :options="enumStore.cities"
+              :disabled="!user.country"
+              required
+          />
 
           <AppInput id="postalCode" v-model="user.postalCode" label="Postal Code" required
                     placeholder="Enter Postal Code"/>
@@ -79,13 +81,7 @@ defineExpose({user});
 
           <AppInput id="notes" v-model="user.notes" label="Notes" required placeholder="Enter Notes"/>
           <AppInput id="email" v-model="user.email" type="email" label="Email" required placeholder="Enter Email"/>
-
-          <AppInput id="password" v-model="user.password" type="password" label="Password" required
-                    placeholder="Enter Password"/>
-          <AppInput id="confirmPassword" v-model="user.confirmPassword" type="password" label="Confirm Password"
-                    required placeholder="Enter Confirm Password"/>
-
-          <slot/>
+          <slot name="other-inputs"/>
         </div>
       </div>
     </div>

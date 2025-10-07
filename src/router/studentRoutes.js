@@ -4,7 +4,7 @@ export default [
     {
         path: "/students",
         name: "students",
-        component: StudentListingView,
+        component: StudentListingView    ,
         meta: {
             requireAuth: true
         }

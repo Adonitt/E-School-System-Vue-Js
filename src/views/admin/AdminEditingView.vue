@@ -8,7 +8,8 @@ import {useLoading} from "@/composables/useLoading";
 import {useAppToast} from "@/composables/useAppToast";
 import adminService from "@/services/adminService";
 import {useRoute, useRouter} from "vue-router";
-import UserUpdateForm from "@/components/shared/UserUpdateForm.vue";
+import UserUpdateForm from "@/components/user-show/UserUpdateForm.vue";
+import {useEnumStore} from "@/stores/enumStore.js";
 
 const breadcrumbs = [
   {label: "Dashboard", to: {name: "home"}},
@@ -37,7 +38,7 @@ const departments = [
 
 const admin = ref(null)
 const route = useRoute()
-
+const enumStore = useEnumStore()
 
 const loadAdminById = async (id) =>
     await withLoading(async () => {
@@ -50,8 +51,12 @@ const loadAdminById = async (id) =>
         userFormRef.value.user.gender = admin.value.gender;
         userFormRef.value.user.birthDate = admin.value.birthDate;
         userFormRef.value.user.address = admin.value.address;
-        userFormRef.value.user.city = admin.value.city;
+        await enumStore.loadCountries();
         userFormRef.value.user.country = admin.value.country;
+
+        await enumStore.loadCities(admin.value.country);
+        userFormRef.value.user.city = admin.value.city;
+
         userFormRef.value.user.postalCode = admin.value.postalCode;
         userFormRef.value.user.phoneNumber = admin.value.phoneNumber;
         userFormRef.value.user.email = admin.value.email;
@@ -158,32 +163,33 @@ onMounted(async () => {
 
       </template>
 
-      <AppInput
-          id="adminNumber"
-          v-model="adminExtra.adminNumber"
-          label="Admin Number"
-          type="number"
-          required
-      />
+      <template #other-inputs>
+        <AppInput
+            id="adminNumber"
+            v-model="adminExtra.adminNumber"
+            label="Admin Number"
+            type="number"
+            required
+        />
 
-      <AppSelect
-          id="department"
-          v-model="adminExtra.department"
-          label="Department"
-          :options="departments"
-          required
-      />
+        <AppSelect
+            id="department"
+            v-model="adminExtra.department"
+            label="Department"
+            :options="departments"
+            required
+        />
 
-      <br>
-      <div class="col-md-4 d-flex align-items-center">
-        <label class="me-2">Active</label>
-        <input type="checkbox" v-model="adminExtra.active"/>
-      </div>
+        <br>
+        <div class="col-md-4 d-flex align-items-center">
+          <label class="me-2">Active</label>
+          <input type="checkbox" v-model="adminExtra.active"/>
+        </div>
 
-      <div class="col-12 mt-3">
-        <button type="submit" class="btn btn-primary">Update Admin</button>
-      </div>
-
+        <div class="col-12 mt-3">
+          <button type="submit" class="btn btn-primary">Update Admin</button>
+        </div>
+      </template>
     </UserUpdateForm>
   </form>
 </template>

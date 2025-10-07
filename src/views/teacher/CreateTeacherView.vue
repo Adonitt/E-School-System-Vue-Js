@@ -1,11 +1,9 @@
 <script setup>
-import UserCreateForm from "@/components/shared/UserCreateForm.vue";
+import UserCreateForm from "@/components/user-show/UserCreateForm.vue";
 import {ref} from "vue";
 import {useLoading} from "@/composables/useLoading.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import AppInput from "@/components/app/AppInput.vue";
-import App from "@/App.vue";
-import AppSpinner from "@/components/app/AppSpinner.vue";
 import AppSelect from "@/components/app/AppSelect.vue";
 import TeacherService from "@/services/teacherService.js";
 import router from "@/router/index.js";
@@ -20,7 +18,6 @@ const breadcrumbs = [
 const teacherExtra = ref({
   specialization: "",
   yearsOfExperience: 0,
-  salary: 0,
   qualification: "",
   employmentDate: null,
   subjectIds: [],
@@ -79,6 +76,7 @@ const onHandleSubmit = async () => {
 }
 
 const subjects = [{name: 'subject1'}, {name: 'subject2'}]
+
 </script>
 
 <template>
@@ -119,7 +117,6 @@ const subjects = [{name: 'subject1'}, {name: 'subject2'}]
       <app-input id="yearsOfExperience" label="Years of Experience" type="number"
                  v-model="teacherExtra.yearsOfExperience"/>
 
-      <app-input id="salary" label="Salary" type="number" v-model="teacherExtra.salary"/>
 
       <app-input id="employmentDate" label="Employment Date" type="date" v-model="teacherExtra.employmentDate"/>
 
