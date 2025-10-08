@@ -37,6 +37,7 @@ const getFullImagePath = (path) => {
 }
 
 const {showDialog, showError, showWarning, showSuccess} = useAppToast()
+
 const onDeleteTeacher = async (id) => {
   const result = await showDialog('Are you sure you want to delete this admin?')
 
@@ -52,6 +53,8 @@ const onDeleteTeacher = async (id) => {
     }
   }
 }
+
+
 
 
 onMounted(async () => {
@@ -88,7 +91,7 @@ onMounted(async () => {
           <tbody>
           <tr v-for="teacher in teachers" :key="teachers.id">
             <td>{{ teacher.id }}</td>
-            <td>
+            <td class="text-center align-middle">
               <img
                   v-if="teacher.photo"
                   :src="getFullImagePath(teacher?.photo)"

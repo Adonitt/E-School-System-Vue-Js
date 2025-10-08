@@ -67,7 +67,6 @@ defineExpose({ user });
               required
           />
 
-          <!-- City (ndryshon në bazë të shtetit) -->
           <AppSelect
               id="city"
               v-model="user.city"

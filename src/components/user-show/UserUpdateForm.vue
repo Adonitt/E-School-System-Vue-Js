@@ -81,7 +81,9 @@ defineExpose({user});
 
           <AppInput id="notes" v-model="user.notes" label="Notes" required placeholder="Enter Notes"/>
           <AppInput id="email" v-model="user.email" type="email" label="Email" required placeholder="Enter Email"/>
+
           <slot name="other-inputs"/>
+
         </div>
       </div>
     </div>

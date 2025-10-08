@@ -26,6 +26,18 @@ class StudentService {
         )
         return res.status === 200 ? res.data : null;
     }
+
+    async deactivateStudent(id) {
+        const res = await client.post(`/students/deactivate-student/${id}`)
+        return res.data;
+    }
+
+    async activateStudent(id) {
+        const res = await client.post(`/students/activate-student/${id}`)
+        return res.data;
+    }
+
+
 }
 
 export default new StudentService()

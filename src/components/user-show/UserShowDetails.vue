@@ -53,15 +53,7 @@ const getFullImagePath = (path) => {
               <div class="col-lg-7 col-md-8">{{ user?.createdDate }}</div>
             </div>
             <br>
-<!--            <div class="row">-->
-<!--              <div class="col-lg-5 col-md-4 label">Modified By</div>-->
-<!--              <div class="col-lg-7 col-md-8">{{ user?.modifiedBy }}</div>-->
-<!--            </div>-->
-<!--            <br>-->
-<!--            <div class="row">-->
-<!--              <div class="col-lg-5 col-md-4 label">Modified At</div>-->
-<!--              <div class="col-lg-7 col-md-8">{{ user?.modifiedDate }}</div>-->
-<!--            </div>-->
+
           </div>
         </div>
       </div>

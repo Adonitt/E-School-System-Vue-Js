@@ -64,7 +64,6 @@ onMounted(async () => {
 <template>
   <bread-crumb :items="breadcrumbs"/>
 
-
   <div class="card mt-3">
     <a>
       <router-link :to="{name:'create-admin'}" class="btn btn-outline-primary float-end m-3">
@@ -90,7 +89,7 @@ onMounted(async () => {
           <tbody>
           <tr v-for="admin in admins" :key="admin.id">
             <td>{{ admin.id }}</td>
-            <td>
+            <td class="text-center align-middle">
               <img
                   v-if="admin.photo"
                   :src="getFullImagePath(admin.photo)"
