@@ -50,8 +50,11 @@ const getFullImagePath = (path) => {
             <br>
             <div class="row">
               <div class="col-lg-5 col-md-4 label">Created At:</div>
-              <div class="col-lg-7 col-md-8">{{ user?.createdDate }}</div>
+              <div class="col-lg-7 col-md-8">
+                {{ new Date(user?.createdDate).toLocaleString('en-GB', { dateStyle: 'short', timeStyle: 'short' }) }}
+              </div>
             </div>
+
             <br>
 
           </div>

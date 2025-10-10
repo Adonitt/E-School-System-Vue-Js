@@ -1,4 +1,5 @@
 import client from "@/helpers/client.js";
+import axios from "axios";
 
 class AdminService {
     async getAllAdmins() {
@@ -37,6 +38,22 @@ class AdminService {
         const res = await client.delete(`/admin/${id}`)
         return res.data === 204
     }
+
+    token = localStorage.getItem("token");
+
+    async changePassword(data) {
+        const res = await axios.post(
+            "http://localhost:8080/api/v1/auth/change-password",
+            data,
+            {
+                headers: {
+                    Authorization: `Bearer ${this.token}`,
+                },
+            }
+        );
+        return res.data;
+    }
+
 
 }
 

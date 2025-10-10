@@ -90,16 +90,18 @@ const loadStudentById = async (id) => {
 
 
 const onHandleSubmit = async (id) => {
+  const {photo, previewImage, ...rest} = studentExtra.value
+
   const dto = {
     id,
     ...userFormRef.value.user,
-    ...studentExtra.value
+    ...rest
   }
 
   const formData = new FormData();
   formData.append(
       "dto",
-      new Blob([JSON.stringify(dto)], { type: "application/json" })
+      new Blob([JSON.stringify(dto)], {type: "application/json"})
   );
 
   if (studentExtra.value.photo instanceof File) {

@@ -81,18 +81,19 @@ console.log(profile)
             <br>
             <div class="row">
               <div class="col-lg-5 col-md-4 label">Created At:</div>
-              <div class="col-lg-7 col-md-8">{{ profile?.createdDate }}</div>
+              <div class="col-lg-7 col-md-8">
+                {{ new Date(profile?.createdDate).toLocaleString('en-GB', {dateStyle: 'short', timeStyle: 'short'}) }}
+              </div>
             </div>
-            <br>
-<!--            <div class="row">-->
-<!--              <div class="col-lg-5 col-md-4 label">Modified By</div>-->
-<!--              <div class="col-lg-7 col-md-8">{{ profile?.modifiedBy }}</div>-->
-<!--            </div>-->
-<!--            <br>-->
-<!--            <div class="row">-->
-<!--              <div class="col-lg-5 col-md-4 label">Modified At</div>-->
-<!--              <div class="col-lg-7 col-md-8">{{ profile?.modifiedDate }}</div>-->
-<!--            </div>-->
+            <!--            <div class="row">-->
+            <!--              <div class="col-lg-5 col-md-4 label">Modified By</div>-->
+            <!--              <div class="col-lg-7 col-md-8">{{ profile?.modifiedBy }}</div>-->
+            <!--            </div>-->
+            <!--            <br>-->
+            <!--            <div class="row">-->
+            <!--              <div class="col-lg-5 col-md-4 label">Modified At</div>-->
+            <!--              <div class="col-lg-7 col-md-8">{{ profile?.modifiedDate }}</div>-->
+            <!--            </div>-->
           </div>
         </div>
       </div>
@@ -232,7 +233,7 @@ console.log(profile)
                    class="tab-pane fade profile-overview active show">
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Registered Date</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.registeredDate }}</div>
+                  {{ new Date(profile?.createdDate).toLocaleString('en-GB', {dateStyle: 'short', timeStyle: 'short'}) }}
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Academic Year</div>
@@ -253,16 +254,19 @@ console.log(profile)
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Graduated?</div>
                   <div class="col-lg-9 col-md-8">
-  <span
-      class="badge"
-      :class="profile?.graduated ? 'bg-success' : 'bg-danger'">
-    {{ profile?.graduated ? 'Yes' : 'No' }}
-  </span>
+                    <span class="badge" :class="profile?.graduated ? 'bg-success' : 'bg-danger'">
+              {{ profile?.graduated ? 'Yes' : 'No' }}
+            </span>
+
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-lg-3 col-md-4 label">Is Active Student?</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.active }}</div>
+                  <div class="col-lg-3 col-md-4 label">Is Active?</div>
+                  <div class="col-lg-9 col-md-8">
+                    <span class="badge" :class="profile?.active ? 'bg-success' : 'bg-danger'">
+              {{ profile?.active ? 'Yes' : 'No' }}
+            </span>
+                  </div>
                 </div>
                 <hr>
                 <div class="row">
@@ -288,7 +292,7 @@ console.log(profile)
 
               </div>
             </div>
-            <a class="btn btn-primary">Change Password</a>
+            <router-link :to="{name:'change-password'}" class="btn btn-primary">Change Password</router-link>
           </div>
         </div>
       </div>

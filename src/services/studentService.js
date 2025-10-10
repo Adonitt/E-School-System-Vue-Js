@@ -37,6 +37,11 @@ class StudentService {
         return res.data;
     }
 
+    async getStudentByClassNumber(classNumber) {
+        const res = await client.get(`/students/students-by-class/${classNumber}`)
+        return res.data;
+    }
+
 
 }
 

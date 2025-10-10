@@ -103,10 +103,9 @@ console.log(authStore.loggedInUser)
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="#">
-                <i class="bi bi-gear"></i>
-                <span>Account Settings</span>
-              </a>
+              <router-link :to="{name:'change-password'}" class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-lock me-1"></i> Change Password
+              </router-link>
             </li>
             <li>
               <hr class="dropdown-divider">

@@ -1,9 +1,8 @@
 <script setup>
 
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, ref} from "vue";
 import StudentService from "@/services/studentService.js";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
-import {useAuthStore} from "@/stores/authStore.js";
 import {useLoading} from "@/composables/useLoading.js";
 import AppButton from "@/components/app/AppButton.vue";
 import {DataTable} from "datatables.net-vue3";
@@ -19,15 +18,18 @@ const breadcrumbs = [
   {label: 'Students List'},
 ]
 
-const authStore = useAuthStore()
 const students = ref([])
+const allStudents = ref([]);
+
 const {withLoading} = useLoading()
 
 const loadStudents = async () => {
   await withLoading(async () => {
     students.value = await StudentService.getAllStudents()
+    allStudents.value = await StudentService.getAllStudents()
   })
 }
+
 const getFullImagePath = (path) => {
   if (!path) return null;
   return "http://localhost:8080/" + path;
@@ -68,6 +70,7 @@ const onDeactivateStudent = async (id) => {
 
 
 onMounted(async () => {
+  await nextTick();
   await loadStudents()
   new DataTablesCore("#studentTable")
 })
@@ -83,6 +86,8 @@ onMounted(async () => {
         Create a new Student
       </router-link>
     </a>
+
+
     <div class="card-body">
       <h5 class="card-title">Students List</h5>
       <div class="table-responsive">

@@ -8,6 +8,7 @@ import MyProfileView from "@/views/profile/MyProfileView.vue";
 import teacherService from "@/services/teacherService.js";
 import teacherRoutes from "@/router/teacherRoutes.js";
 import studentRoutes from "@/router/studentRoutes.js";
+import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
 
 const routes = [
     {
@@ -38,6 +39,14 @@ const routes = [
         path: '/my-profile',
         name: 'my-profile',
         component: MyProfileView,
+        meta: {
+            requireAuth: true
+        }
+    },
+    {
+        path: '/change-password',
+        name: 'change-password',
+        component: ChangePasswordView,
         meta: {
             requireAuth: true
         }
