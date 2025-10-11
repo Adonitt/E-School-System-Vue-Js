@@ -25,7 +25,7 @@ const loadStudentById = async () => {
 
 onMounted(async () => {
   await loadStudentById(studentId)
-  console.log(student.value)
+  console.log(student.value.subjectIds)
 })
 
 </script>
@@ -68,12 +68,16 @@ onMounted(async () => {
       <hr>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Attendance Record</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.attendanceRecordIds }}</div>
+        <div class="col-lg-9 col-md-8"> {{ student?.attendanceRecordIds }}
+          <a href="#">My Attendance</a>
+        </div>
         <!--        TODO: // qitu ni link me i pa attendances e studentit-->
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Grades</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.gradeIds }}</div>
+        <div class="col-lg-9 col-md-8"> {{ student?.gradeIds }}
+          <a href="#">My Grades</a>
+        </div>
         <!--        TODO= qitu ni link me i pa grades e veta -->
       </div>
       <div class="row">
@@ -82,7 +86,9 @@ onMounted(async () => {
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Subjects</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.subjectIds }}</div>
+        <div class="col-lg-9 col-md-8"> {{ student?.subjectIds }}
+          <a href="#">My Subjects</a>
+        </div>
         <!--        TODO qitu ni link me i pa subjects e veta-->
       </div>
       <hr>

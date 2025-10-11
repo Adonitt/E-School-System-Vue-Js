@@ -42,8 +42,8 @@ class AdminService {
     token = localStorage.getItem("token");
 
     async changePassword(data) {
-        const res = await axios.post(
-            "http://localhost:8080/api/v1/auth/change-password",
+        const res = await client.put(
+            "/auth/change-password",
             data,
             {
                 headers: {

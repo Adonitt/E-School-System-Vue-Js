@@ -1,28 +1,19 @@
 import AuthView from "@/views/auth/AuthView.vue";
-import RegisterView from "@/views/auth/RegisterView.vue";
 import {createRouter, createWebHistory} from "vue-router";
 import TheContainer from "@/components/ui/TheContainer.vue";
 import {useAuthStore} from "@/stores/authStore.js";
 import adminRoutes from "@/router/adminRoutes.js";
 import MyProfileView from "@/views/profile/MyProfileView.vue";
-import teacherService from "@/services/teacherService.js";
 import teacherRoutes from "@/router/teacherRoutes.js";
 import studentRoutes from "@/router/studentRoutes.js";
-import ChangePasswordView from "@/views/profile/ChangePasswordView.vue";
+import ChangePasswordView from "@/views/auth/ChangePasswordView.vue";
+import subjectRoutes from "@/router/subjectRoutes.js";
 
 const routes = [
     {
         path: "/auth/login",
         name: 'login',
         component: AuthView,
-        meta: {
-            requireAuth: false
-        }
-    },
-    {
-        path: '/auth/register',
-        name: 'register',
-        component: RegisterView,
         meta: {
             requireAuth: false
         }
@@ -53,7 +44,8 @@ const routes = [
     },
     ...adminRoutes,
     ...teacherRoutes,
-    ...studentRoutes
+    ...studentRoutes,
+    ...subjectRoutes
 ]
 
 const router = createRouter({

@@ -58,7 +58,7 @@ defineExpose({ user });
           <AppInput v-model="user.birthDate" type="date" label="Birth Date" required id="birthdate" />
           <AppInput id="address" v-model="user.address" label="Address" required placeholder="Enter Address" />
 
-          <!-- Country -->
+
           <AppSelect
               id="country"
               v-model="user.country"

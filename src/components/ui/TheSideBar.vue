@@ -39,6 +39,12 @@
       </li>
 
       <li class="nav-item ">
+        <router-link :to="{name:'subjects'}" class="nav-link collapsed">
+          <i class="bi bi-newspaper"></i>
+          <span>Subjects</span>
+        </router-link>
+      </li>
+      <li class="nav-item ">
         <router-link :to="{name:'my-profile'}" class="nav-link collapsed">
           <i class="bi bi-person"></i>
           <span>My Profile</span>
