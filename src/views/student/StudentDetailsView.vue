@@ -84,14 +84,19 @@ onMounted(async () => {
         <div class="col-lg-3 col-md-4 label">Class Number</div>
         <div class="col-lg-9 col-md-8"> {{ student?.classNumber }}</div>
       </div>
-      <div class="row">
+      <div class="row mb-3">
         <div class="col-lg-3 col-md-4 label">Subjects</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.subjectIds }}
-          <a href="#">My Subjects</a>
+        <div class="col-lg-9 col-md-8">
+          <router-link
+              :to="{ name: 'student-subjects', params: { id: studentId } }"
+              class="btn btn-primary btn-sm"
+          >
+            <i class="bi bi-journal-bookmark me-1"></i> Student Subjects
+          </router-link>
         </div>
-        <!--        TODO qitu ni link me i pa subjects e veta-->
       </div>
       <hr>
+
 
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Guardian Name</div>

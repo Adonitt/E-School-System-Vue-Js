@@ -219,11 +219,12 @@ console.log(profile)
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Subjects</div>
                   <div class="col-lg-9 col-md-8">
-                    <ol>
-                      <li v-for="(name, index) in subjectNames" :key="index">
-                        {{ name }}
-                      </li>
-                    </ol>
+                    <router-link v-for="(subject, index) in profile?.subjectNames"
+                                 :key="index"
+                                 :to="{ name: 'subject-details', params: { id: profile.subjectIds[index] } }"
+                                 class="badge bg-info me-1">
+                      {{ subject }}
+                    </router-link>
                   </div>
                 </div>
 
@@ -266,6 +267,17 @@ console.log(profile)
                     <span class="badge" :class="profile?.active ? 'bg-success' : 'bg-danger'">
               {{ profile?.active ? 'Yes' : 'No' }}
             </span>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label">Subjects</div>
+                  <div class="col-lg-9 col-md-8">
+                    <router-link
+                        :to="{ name: 'student-subjects', params: { id:authStore.loggedInUser.id } }"
+                        class="btn btn-primary btn-sm"
+                    >
+                      <i class="bi bi-journal-bookmark me-1"></i> My Subjects
+                    </router-link>
                   </div>
                 </div>
                 <hr>

@@ -86,7 +86,12 @@ onMounted(async () => {
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Subjects</div>
-        <div class="col-lg-9 col-md-8">{{ teacher?.subjectIds }}</div>
+        <div class="col-lg-9 col-md-8"><router-link v-for="(subject, index) in teacher?.subjectNames"
+                                                    :key="index"
+                                                    :to="{ name: 'subject-details', params: { id: teacher.subjectIds[index] } }"
+                                                    class="badge bg-info me-1">
+          {{ subject }}
+        </router-link></div>
       </div>
     </template>
   </user-show-details>

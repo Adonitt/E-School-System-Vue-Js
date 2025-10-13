@@ -26,6 +26,7 @@ const loadSubject = async (id) => {
   });
 };
 
+
 const {showError, showSuccess, showDialog} = useAppToast()
 const onDeleteSubject = async (id) => {
 
@@ -47,6 +48,7 @@ const onDeleteSubject = async (id) => {
 
 onMounted(async () => {
   await loadSubject(subjectId);
+  console.log(subject.value.students)
 });
 </script>
 
@@ -84,8 +86,10 @@ onMounted(async () => {
             <div class="info-box">
               <strong><i class="bi bi-person-lines-fill"></i> Teachers:</strong>
               <ul class="list-unstyled mt-2">
-                <li v-for="t in subject?.teacherNames" :key="t" class="badge bg-secondary me-2">
-                  {{ t }}
+                <li v-for="(t,index) in subject?.teacherNames" :key="t" class="badge bg-secondary me-2">
+                  <router-link :to="{ name: 'teacher-details', params: { id: subject.teacherIds[index] } }">
+                    <span class="text-light"> {{ t }}</span>
+                  </router-link>
                 </li>
               </ul>
             </div>
@@ -130,14 +134,21 @@ onMounted(async () => {
           <div class="col-md-6">
             <div class="info-box">
               <strong><i class="bi bi-people-fill"></i> Students:</strong>
-              <div class="mt-2">
-                <span v-if="subject?.students?.length">
-                  {{ subject.students.length }} enrolled
-                </span>
-                <span v-else>No students enrolled</span>
+              <div class="mt-2 d-flex flex-wrap gap-2">
+      <span v-if="subject?.students?.length"
+            v-for="(student, index) in subject.studentNames"
+            :key="subject.students[index]">
+        <router-link
+            :to="{ name:'student-details', params: { id: subject.students[index] } }"
+            class="btn btn-sm btn-outline-primary student-badge">
+          {{ student }}
+        </router-link>
+      </span>
+                <span v-else class="text-muted">No students enrolled</span>
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -160,5 +171,34 @@ onMounted(async () => {
 
 .badge {
   font-size: 0.85rem;
+}
+
+<
+style scoped >
+.info-box {
+  background-color: #f8f9fa;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  height: 100%;
+}
+
+.student-badge {
+  font-size: 0.85rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s;
+}
+
+.student-badge:hover {
+  background-color: #0d6efd;
+  color: white;
+  text-decoration: none;
+}
+
+@media (max-width: 576px) {
+  .student-badge {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.4rem;
+  }
 }
 </style>

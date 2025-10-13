@@ -53,10 +53,9 @@ const semesterOptions = [
 const loadAllTeachers = async () => {
   const teachers = await TeacherService.getAllTeachers()
   teacherOptions.value = teachers.map(t => ({
-    label: t.name + ' ' + t.surname,
-    value: +t.id
+    label: `${t.name} ${t.surname}`,
+    value: String(t.id)
   }));
-
 }
 
 const loadSubjectById = async (id) => {
@@ -66,15 +65,13 @@ const loadSubjectById = async (id) => {
     if (subject.value) {
       subjectObj.value.name = subject.value.name
       subjectObj.value.description = subject.value.description
-      subjectObj.value.teachers = subject.value.teachers?.map(t => +t.id) || [];
+      subjectObj.value.teachers = subject.value.teacherIds?.map(id => String(id)) || [];
       subjectObj.value.credits = subject.value.credits
       subjectObj.value.totalHours = subject.value.totalHours
       subjectObj.value.semester = subject.value.semester
       subjectObj.value.classNumber = subject.value.classNumber
     }
   });
-
-
 }
 
 const {showSuccess, showError} = useAppToast()
@@ -91,10 +88,13 @@ const onHandleSubmit = async () => {
   })
 }
 
+
 onMounted(async () => {
   await loadAllTeachers()
   await loadSubjectById(subjectId)
   await loadAllClassNumbers()
+  // console.log(subjectObj.value.teachers)
+  console.log(subject.value)
 })
 
 </script>
@@ -143,7 +143,6 @@ onMounted(async () => {
                       :value="t.value"
                       v-model="subjectObj.teachers"
                   />
-
 
                   <label class="form-check-label" :for="'teacher-' + t.value">
                     {{ t.label }}

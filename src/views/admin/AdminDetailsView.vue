@@ -58,12 +58,12 @@ onMounted(() => {
     <user-show-details :user="admin">
       <template #buttons>
         <router-link class="btn btn-secondary  " :to="{name:'edit-admin', params:{id:route.params.id}}"
-        >Update Teacher
+        >Update Admin
         </router-link>
 
-        <app-button class="btn btn-danger flex" @click="onDeleteAdmin(admin.id)"
-        >Delete Teacher
-        </app-button>
+<!--        <app-button class="btn btn-danger flex" @click="onDeleteAdmin(admin.id)"-->
+<!--        >Delete Admin-->
+<!--        </app-button>-->
       </template>
 
       <template #other-details>
