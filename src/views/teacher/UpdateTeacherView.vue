@@ -1,6 +1,6 @@
 <script setup>
 
-import UserUpdateForm from "@/components/user-show/UserUpdateForm.vue";
+import UserUpdateForm from "@/components/user-form/UserUpdateForm.vue";
 import {onMounted, ref} from "vue";
 import {useLoading} from "@/composables/useLoading.js";
 import teacherService from "@/services/teacherService.js";

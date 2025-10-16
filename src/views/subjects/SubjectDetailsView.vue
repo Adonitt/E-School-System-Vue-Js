@@ -152,11 +152,19 @@ onMounted(async () => {
         </div>
       </div>
 
-      <div class="card-footer text-end bg-light">
+      <div class="card-footer d-flex justify-content-between align-items-center bg-light">
         <router-link :to="{name:'subjects'}" class="btn btn-outline-secondary">
           <i class="bi bi-arrow-left"></i> Back to List
         </router-link>
+
+        <router-link
+            :to="{ name: 'add-attendance', query: { subjectId: subject?.id } }"
+            class="btn btn-primary"
+        >
+          <i class="bi bi-clipboard-plus"></i> Add Attendance
+        </router-link>
       </div>
+
     </div>
   </div>
 </template>

@@ -17,17 +17,17 @@ defineProps({
 <template>
 
 
-  <div class="col-md-4" >
+  <div class="col-md-4">
     <label class="form-label" :for="id">{{ label }}</label>
 
     <input
         :type="type"
         :id="id"
-        class="form-control"
+        class="form-control "
         :class="{'is-invalid': isInvalid}"
         v-model="model"
         v-bind="$attrs"
     >
-    <div class="invalid-feedback">{{ invalidFeedback}}</div>
+    <div class="invalid-feedback">{{ invalidFeedback }}</div>
   </div>
 </template>

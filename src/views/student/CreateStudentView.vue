@@ -1,6 +1,6 @@
 <script setup>
 
-import UserCreateForm from "@/components/user-show/UserCreateForm.vue";
+import UserCreateForm from "@/components/user-form/UserCreateForm.vue";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {ref} from "vue";
 import AppInput from "@/components/app/AppInput.vue";

@@ -8,6 +8,8 @@ import teacherRoutes from "@/router/teacherRoutes.js";
 import studentRoutes from "@/router/studentRoutes.js";
 import ChangePasswordView from "@/views/auth/ChangePasswordView.vue";
 import subjectRoutes from "@/router/subjectRoutes.js";
+import attendanceService from "@/services/attendanceService.js";
+import attendanceRoutes from "@/router/attendanceRoutes.js";
 
 const routes = [
     {
@@ -45,7 +47,8 @@ const routes = [
     ...adminRoutes,
     ...teacherRoutes,
     ...studentRoutes,
-    ...subjectRoutes
+    ...subjectRoutes,
+    ...attendanceRoutes
 ]
 
 const router = createRouter({

@@ -269,6 +269,7 @@ console.log(profile)
             </span>
                   </div>
                 </div>
+
                 <div class="row mb-3">
                   <div class="col-lg-3 col-md-4 label">Subjects</div>
                   <div class="col-lg-9 col-md-8">
@@ -280,6 +281,20 @@ console.log(profile)
                     </router-link>
                   </div>
                 </div>
+
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label">Subjects</div>
+                  <div class="col-lg-9 col-md-8">
+
+                    <router-link
+                        :to="{ name: 'student-attendances', params: { id: authStore.loggedInUser.id} }"
+                        class="btn btn-primary btn-sm"
+                    >
+                      <i class="bi bi-journal-text me-1"></i> My Attendances
+                    </router-link>
+                  </div>
+                </div>
+
                 <hr>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Guardian Name</div>

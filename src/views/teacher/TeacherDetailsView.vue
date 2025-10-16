@@ -4,7 +4,7 @@ import {onMounted, ref} from "vue";
 import TeacherService from "@/services/teacherService.js";
 import {useRoute, useRouter} from "vue-router";
 import {useLoading} from "@/composables/useLoading.js";
-import UserShowDetails from "@/components/user-show/UserShowDetails.vue";
+import UserShowDetails from "@/components/user-form/UserShowDetails.vue";
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
 

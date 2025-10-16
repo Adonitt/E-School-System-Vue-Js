@@ -34,7 +34,7 @@ export function useAppToast() {
     const showDialog = (
         title = "Are you sure",
         text = "You won't be able to revert this!",
-        confirmBtnText = "Yes, delete it!"
+        confirmBtnText = "Yes!"
         ,) => {
         return Swal.fire({
             title: title,
@@ -48,5 +48,5 @@ export function useAppToast() {
     }
 
 
-    return {showSuccess, showError, showWarning,showDialog}
+    return {showSuccess, showError, showWarning, showDialog}
 }

@@ -44,6 +44,14 @@
           <span>Subjects</span>
         </router-link>
       </li>
+
+      <li class="nav-item ">
+        <router-link :to="{name:'attendance'}" class="nav-link collapsed">
+          <i class="bi bi-journal-text"></i>
+          <span>Attendances</span>
+        </router-link>
+      </li>
+
       <li class="nav-item ">
         <router-link :to="{name:'my-profile'}" class="nav-link collapsed">
           <i class="bi bi-person"></i>

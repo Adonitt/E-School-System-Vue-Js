@@ -1,5 +1,5 @@
 <script setup>
-import UserCreateForm from "@/components/user-show/UserCreateForm.vue";
+import UserCreateForm from "@/components/user-form/UserCreateForm.vue";
 import {ref} from "vue";
 import {useLoading} from "@/composables/useLoading.js";
 import {useAppToast} from "@/composables/useAppToast.js";

@@ -5,7 +5,7 @@ import {useLoading} from "@/composables/useLoading.js";
 import AdminService from "@/services/adminService.js";
 import {useRoute, useRouter} from "vue-router";
 import {useAppToast} from "@/composables/useAppToast.js";
-import UserShowDetails from "@/components/user-show/UserShowDetails.vue";
+import UserShowDetails from "@/components/user-form/UserShowDetails.vue";
 import AppButton from "@/components/app/AppButton.vue";
 
 const breadcrumbs = [

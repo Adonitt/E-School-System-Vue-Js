@@ -8,7 +8,7 @@ import {useLoading} from "@/composables/useLoading";
 import {useAppToast} from "@/composables/useAppToast";
 import adminService from "@/services/adminService";
 import {useRoute, useRouter} from "vue-router";
-import UserUpdateForm from "@/components/user-show/UserUpdateForm.vue";
+import UserUpdateForm from "@/components/user-form/UserUpdateForm.vue";
 import {useEnumStore} from "@/stores/enumStore.js";
 
 const breadcrumbs = [
