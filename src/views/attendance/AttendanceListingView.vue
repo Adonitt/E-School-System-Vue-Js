@@ -22,6 +22,7 @@ const loadAllAttendances = async () => {
   await withLoading(async () => {
     try {
       const data = await AttendanceService.getAllAttendances();
+
       attendances.value = await Promise.all(
           data.map(async (a) => {
             const student = await StudentService.getStudentById(a.studentId);
@@ -72,7 +73,6 @@ onMounted(loadAllAttendances);
             placeholder="Search by student or subject..."
             class="form-control form-control-sm"
         />
-        <!-- ✅ filter per date -->
         <input
             v-model="filterDate"
             type="date"
@@ -91,6 +91,7 @@ onMounted(loadAllAttendances);
           <th scope="col" style="width: 15%">Present</th>
           <th scope="col" style="width: 15%">Date</th>
           <th scope="col" style="width: 15%">Notes</th>
+          <th scope="col" style="width: 15%">Details</th>
         </tr>
         </thead>
         <tbody>
@@ -131,6 +132,9 @@ onMounted(loadAllAttendances);
 
           <td>{{ item.date }}</td>
           <td>{{ item.notes }}</td>
+          <td>
+            <router-link class="btn btn-primary" :to="{name:'student-attendances',params:{id:item.studentId}}">Details</router-link>
+          </td>
 
 
         </tr>

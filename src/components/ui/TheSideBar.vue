@@ -51,6 +51,12 @@
           <span>Attendances</span>
         </router-link>
       </li>
+      <li class="nav-item ">
+        <router-link :to="{name:'grades'}" class="nav-link collapsed">
+          <i class="bi-sort-numeric-up-alt"></i>
+          <span>Grades</span>
+        </router-link>
+      </li>
 
       <li class="nav-item ">
         <router-link :to="{name:'my-profile'}" class="nav-link collapsed">

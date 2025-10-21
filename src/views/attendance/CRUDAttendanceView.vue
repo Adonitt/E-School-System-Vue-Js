@@ -59,6 +59,7 @@ const submitAttendance = async () => {
     showError("Please select a student or a date.");
     return;
   }
+
   try {
     await AttendanceService.addAttendance({
       studentId: selectedStudent.value,
@@ -91,6 +92,7 @@ const openEditModal = (att) => {
   editingAttendance.value = {...att};
   showEditModal.value = true;
 };
+
 const updateAttendance = async () => {
   try {
     await AttendanceService.updateAttendance(editingAttendance.value.id, {
@@ -141,9 +143,9 @@ onMounted(async () => {
 
   <div class="container mt-4">
 
-    <div class="card shadow-sm border-0 mb-4">
-      <div class="card-header bg-light text-dark">
-        <h5 class="mb-0"><i class="bi bi-journal-plus"></i> Add Attendance</h5>
+    <div class="card shadow-sm border-0 mb-4 justify-content-between">
+      <div class="card-header bg-light text-dark text-center">
+        <h5 class="mb-0"><i class="bi bi-journal-plus"></i> Add Attendance on <b> {{ subject?.name }}</b></h5>
       </div>
 
       <form @submit.prevent="submitAttendance" class="card-body">
@@ -188,7 +190,8 @@ onMounted(async () => {
 
     <div class="card shadow-sm border-0">
       <div class="card-header bg-light text-dark d-flex justify-content-between align-items-center">
-        <h5 class="mb-0"><i class="bi bi-people"></i> Students with Attendance in Subject: {{ subject?.name }}</h5>
+        <h5 class="mb-0"><i class="bi bi-people"></i> Students with Attendance in Subject: <b>{{ subject?.name }}</b>
+        </h5>
         <div>
           <input type="date" class="form-control" v-model="filterDate" placeholder="Filter by date"/>
         </div>

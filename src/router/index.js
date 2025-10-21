@@ -10,6 +10,7 @@ import ChangePasswordView from "@/views/auth/ChangePasswordView.vue";
 import subjectRoutes from "@/router/subjectRoutes.js";
 import attendanceService from "@/services/attendanceService.js";
 import attendanceRoutes from "@/router/attendanceRoutes.js";
+import gradeRoutes from "@/router/gradeRoutes.js";
 
 const routes = [
     {
@@ -48,7 +49,8 @@ const routes = [
     ...teacherRoutes,
     ...studentRoutes,
     ...subjectRoutes,
-    ...attendanceRoutes
+    ...attendanceRoutes,
+    ...gradeRoutes
 ]
 
 const router = createRouter({

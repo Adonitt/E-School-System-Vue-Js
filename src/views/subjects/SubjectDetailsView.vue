@@ -163,6 +163,11 @@ onMounted(async () => {
         >
           <i class="bi bi-clipboard-plus"></i> Add Attendance
         </router-link>
+
+        <router-link :to="{name:'add-grade', query: {subjectId: subject?.id}}"
+                     class="btn btn-primary"
+        >Add Grades
+        </router-link>
       </div>
 
     </div>
