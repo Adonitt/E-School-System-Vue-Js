@@ -3,6 +3,7 @@ import CreateSubjectView from "@/views/subjects/CreateSubjectView.vue";
 import UpdateStudentView from "@/views/student/UpdateStudentView.vue";
 import SubjectDetailsView from "@/views/subjects/SubjectDetailsView.vue";
 import UpdateSubjectView from "@/views/subjects/UpdateSubjectView.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 export default [
     {
@@ -18,7 +19,8 @@ export default [
         name: 'create-subject',
         component: CreateSubjectView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
         }
     },
     {
@@ -26,7 +28,8 @@ export default [
         name: 'edit-subject',
         component: UpdateSubjectView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
         }
     },
     {

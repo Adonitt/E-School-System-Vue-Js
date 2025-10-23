@@ -8,11 +8,19 @@ import teacherRoutes from "@/router/teacherRoutes.js";
 import studentRoutes from "@/router/studentRoutes.js";
 import ChangePasswordView from "@/views/auth/ChangePasswordView.vue";
 import subjectRoutes from "@/router/subjectRoutes.js";
-import attendanceService from "@/services/attendanceService.js";
 import attendanceRoutes from "@/router/attendanceRoutes.js";
 import gradeRoutes from "@/router/gradeRoutes.js";
+import {useAppToast} from "@/composables/useAppToast.js";
+import NotFoundPageView from "@/views/NotFoundPageView.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 const routes = [
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'NotFound',
+        component: NotFoundPageView
+    }
+    ,
     {
         path: "/auth/login",
         name: 'login',
@@ -58,25 +66,47 @@ const router = createRouter({
     routes
 });
 
-
 router.beforeEach(async (to, from) => {
-    const authStore = useAuthStore()
+    const authStore = useAuthStore();
+    const user = authStore.loggedInUser;
 
-    const publicPages = ['login', 'register', 'forgot-password'];
-    if (to.meta.requireAuth && !authStore.isLoggedIn) {
-        return {
-            name: 'login',
-            query: {
-                redirect: to.fullPath
-            }
-        }
-    } else if (publicPages.includes(to.name) && authStore.isLoggedIn) {
-        return {
-            name: 'home'
+    const studentRestrictedRoutes = [
+        'student-subjects',
+        'student-grades',
+        'student-attendances'
+    ];
+
+    if (user?.role === ROLES.STUDENT && to.params?.id && studentRestrictedRoutes.includes(to.name)) {
+        const ownId = String(user.id);
+        const requestedId = String(to.params.id);
+
+        if (requestedId !== ownId) {
+            useAppToast().showError("You can only access your own data!");
+            return {
+                name: to.name,
+                params: {...to.params, id: ownId},
+                replace: true
+            };
         }
     }
-    return true;
 
-})
+    if (to.meta.roles && to.meta.roles.length > 0 && user) {
+        const isAllowed = to.meta.roles.includes(user.role);
+        if (!isAllowed) {
+            useAppToast().showError('Access Denied: You do not have the required role for this page.');
+            return {name: 'home'};
+        }
+    }
+
+    const publicPages = ['login', 'register', 'forgot-password'];
+    if (to.meta.requireAuth && !user) {
+        return {name: 'login', query: {redirect: to.fullPath}};
+    } else if (publicPages.includes(to.name) && user) {
+        return {name: 'home'};
+    }
+
+    return true;
+});
+
 
 export default router;

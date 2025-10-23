@@ -7,6 +7,8 @@ import subjectService from "@/services/subjectService.js";
 import SubjectService from "@/services/subjectService.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import router from "@/router/index.js";
+import {ROLES} from "@/composables/useAdministration.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const breadcrumbs = [
   {label: 'Dashboard', to: {name: 'home'}},
@@ -45,6 +47,7 @@ const onDeleteSubject = async (id) => {
   }
 }
 
+const authStore = useAuthStore()
 
 onMounted(async () => {
   await loadSubject(subjectId);
@@ -64,11 +67,16 @@ onMounted(async () => {
         <div class="d-flex align-items-center gap-2">
           <span class="badge bg-light text-dark">ID: {{ subject?.id }}</span>
 
-          <router-link :to="{name:'edit-subject', params:{id:subject?.id}}" class="btn btn-sm btn-primary">
+          <router-link
+              v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+              :to="{name:'edit-subject', params:{id:subject?.id}}"
+              class="btn btn-sm btn-primary">
             <i class="bi bi-pencil"></i> Modify
           </router-link>
 
-          <button @click="onDeleteSubject" class="btn btn-sm btn-danger">
+          <button @click="onDeleteSubject" class="btn btn-sm btn-danger"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+          >
             <i class="bi bi-trash"></i> Delete
           </button>
         </div>
@@ -100,7 +108,7 @@ onMounted(async () => {
               <strong><i class="bi bi-123"></i> Class Numbers:</strong>
               <div class="mt-2">
                 <span v-for="n in subject?.classNumber" :key="n" class="badge bg-info text-dark me-1">
-                  {{ n }}
+                  <router-link :to="{name:'students-by-class-number',params:{classNumber: n}}">{{ n }}</router-link>
                 </span>
               </div>
             </div>
@@ -139,10 +147,12 @@ onMounted(async () => {
             v-for="(student, index) in subject.studentNames"
             :key="subject.students[index]">
         <router-link
+            v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
             :to="{ name:'student-details', params: { id: subject.students[index] } }"
             class="btn btn-sm btn-outline-primary student-badge">
           {{ student }}
         </router-link>
+        <span v-else class="badge bg-secondary text-light">{{ student }}</span>
       </span>
                 <span v-else class="text-muted">No students enrolled</span>
               </div>
@@ -160,11 +170,14 @@ onMounted(async () => {
         <router-link
             :to="{ name: 'add-attendance', query: { subjectId: subject?.id } }"
             class="btn btn-primary"
+            v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
         >
           <i class="bi bi-clipboard-plus"></i> Add Attendance
         </router-link>
 
         <router-link :to="{name:'add-grade', query: {subjectId: subject?.id}}"
+                     v-if="authStore.loggedInUser?.role === ROLES.TEACHER"
+
                      class="btn btn-primary"
         >Add Grades
         </router-link>

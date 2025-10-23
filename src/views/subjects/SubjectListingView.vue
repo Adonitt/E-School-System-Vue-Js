@@ -5,6 +5,8 @@ import {useLoading} from "@/composables/useLoading.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import SubjectService from "@/services/subjectService.js";
 import AppButton from "@/components/app/AppButton.vue";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 
 const breadCrumbs = [
@@ -42,7 +44,7 @@ const onDeleteSubject = async (id) => {
 onMounted(async () => {
   await loadSubjects()
 })
-
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -50,7 +52,9 @@ onMounted(async () => {
 
   <div class="card mt-3">
     <a>
-      <router-link :to="{name:'create-subject'}" class="btn btn-outline-primary float-end m-3">
+      <router-link :to="{name:'create-subject'}" class="btn btn-outline-primary float-end m-3"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+      >
         Create a new Subject
       </router-link>
     </a>
@@ -86,11 +90,15 @@ onMounted(async () => {
 
               <router-link
                   :to="{name:'edit-subject', params:{id:subject.id}}"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
                   class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
               </router-link>
               <app-button
                   class="btn btn-danger btn-sm"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
                   @click="onDeleteSubject(subject.id)">
                 <i class="bi bi-trash"></i>
               </app-button>

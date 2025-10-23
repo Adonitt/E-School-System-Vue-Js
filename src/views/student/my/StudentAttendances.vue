@@ -6,6 +6,8 @@ import SubjectService from "@/services/subjectService.js";
 import BreadCrumb from "@/components/shared/BreadCrumb.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
 import StudentService from "@/services/studentService.js";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 const route = useRoute();
 const studentId = +route.params.id;
@@ -66,6 +68,7 @@ const updateAttendance = async () => {
     showError(err.response?.data?.message || "Failed to update attendance.");
   }
 };
+
 const loadStudent = async () => {
   try {
     student.value = await StudentService.getStudentById(studentId);
@@ -78,7 +81,7 @@ onMounted(async () => {
   await loadAttendances()
   await loadStudent()
 });
-
+const authStore = useAuthStore()
 const breadcrumbs = [
   {label: "Dashboard", to: {name: "home"}},
   {label: "Student Attendances"}
@@ -105,7 +108,9 @@ const breadcrumbs = [
           <th>Date</th>
           <th>Present</th>
           <th>Notes</th>
-          <th>Actions</th>
+          <th
+              v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+          >Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -127,7 +132,9 @@ const breadcrumbs = [
           </td>
           <td>{{ att.notes }}</td>
           <td>
-            <button class="btn btn-sm btn-warning me-2" @click="openEditModal(att)">
+            <button class="btn btn-sm btn-warning me-2" @click="openEditModal(att)"
+                    v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+            >
               <i class="bi bi-pencil"></i> Edit
             </button>
           </td>
@@ -137,7 +144,6 @@ const breadcrumbs = [
     </div>
   </div>
 
-  <!-- Modal -->
   <div v-if="showEditModal" class="modal fade show d-block" tabindex="-1">
     <div class="modal-dialog">
       <div class="modal-content">

@@ -7,6 +7,8 @@ import {useLoading} from "@/composables/useLoading.js";
 import UserShowDetails from "@/components/user-form/UserShowDetails.vue";
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
+import {ROLES} from "@/composables/useAdministration.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const breadcrumbs = [
   {label: 'Dashboard', to: {name: 'home'}},
@@ -48,7 +50,7 @@ onMounted(async () => {
   await loadTeacher()
   console.log(teacher.value)
 })
-
+const authStore = useAuthStore()
 
 </script>
 
@@ -59,10 +61,14 @@ onMounted(async () => {
 
     <template #buttons>
       <router-link class="btn btn-secondary  " :to="{name:'edit-teacher', params:{id:route.params.id}}"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
       >Update Teacher
       </router-link>
 
       <app-button class="btn btn-danger flex" @click="onDeleteTeacher(teacher.id)"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
       >Delete Teacher
       </app-button>
     </template>
@@ -86,12 +92,14 @@ onMounted(async () => {
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Subjects</div>
-        <div class="col-lg-9 col-md-8"><router-link v-for="(subject, index) in teacher?.subjectNames"
-                                                    :key="index"
-                                                    :to="{ name: 'subject-details', params: { id: teacher.subjectIds[index] } }"
-                                                    class="badge bg-info me-1">
-          {{ subject }}
-        </router-link></div>
+        <div class="col-lg-9 col-md-8">
+          <router-link v-for="(subject, index) in teacher?.subjectNames"
+                       :key="index"
+                       :to="{ name: 'subject-details', params: { id: teacher.subjectIds[index] } }"
+                       class="badge bg-info me-1">
+            {{ subject }}
+          </router-link>
+        </div>
       </div>
     </template>
   </user-show-details>

@@ -2,6 +2,7 @@ import TeacherListingView from "@/views/teacher/TeacherListingView.vue";
 import CreateTeacherView from "@/views/teacher/CreateTeacherView.vue";
 import UpdateTeacherView from "@/views/teacher/UpdateTeacherView.vue";
 import TeacherDetailsView from "@/views/teacher/TeacherDetailsView.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 export default [
     {
@@ -9,7 +10,7 @@ export default [
         name: 'teachers',
         component: TeacherListingView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
         }
     },
     {
@@ -25,7 +26,8 @@ export default [
         name: 'create-teacher',
         component: CreateTeacherView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
         }
     },
     {
@@ -33,7 +35,8 @@ export default [
         name: 'edit-teacher',
         component: UpdateTeacherView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
         }
     }
 ]

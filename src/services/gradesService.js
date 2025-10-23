@@ -1,6 +1,7 @@
 import client from "@/helpers/client.js";
 
 class GradesService {
+
     async getAllGrades() {
         const res = await client.get('/grades')
         return res.data;

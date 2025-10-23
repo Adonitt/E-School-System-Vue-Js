@@ -2,6 +2,7 @@ import AdminListingView from "@/views/admin/AdminListingView.vue";
 import AdminEditingView from "@/views/admin/AdminEditingView.vue";
 import AdminDetailsView from "@/views/admin/AdminDetailsView.vue";
 import AdminCreateView from "@/views/admin/AdminCreateView.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 export default [
     {
@@ -9,7 +10,9 @@ export default [
         name: 'admins',
         component: AdminListingView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN, ROLES.TEACHER],
+
         }
     },
     {
@@ -17,7 +20,9 @@ export default [
         name: 'edit-admin',
         component: AdminEditingView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
+
         }
     },
     {
@@ -25,7 +30,8 @@ export default [
         name: 'admin-details',
         component: AdminDetailsView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN, ROLES.TEACHER],
         }
     },
     {
@@ -33,7 +39,8 @@ export default [
         name: 'create-admin',
         component: AdminCreateView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN]
         }
     }
 ]

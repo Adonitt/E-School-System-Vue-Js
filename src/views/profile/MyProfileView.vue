@@ -242,7 +242,18 @@ console.log(profile)
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Class Number</div>
-                  <div class="col-lg-9 col-md-8"> {{ profile?.classNumber }}</div>
+                  <div class="col-lg-9 col-md-8">
+
+                    <router-link
+                        v-if="profile?.classNumber"
+                        :to="{ name:'students-by-class-number', params:{ classNumber: profile.classNumber } }"
+                    >
+                      {{ profile.classNumber }}
+                    </router-link>
+                    <span v-else>Class not assigned</span>
+
+                  </div>
+
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-4 label">Current Semester</div>
@@ -291,6 +302,14 @@ console.log(profile)
                         class="btn btn-primary btn-sm"
                     >
                       <i class="bi bi-journal-text me-1"></i> My Attendances
+                    </router-link>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-lg-3 col-md-4 label">Grades</div>
+                  <div class="col-lg-9 col-md-8">
+                    <router-link :to="{name:'student-grades',params:{id: authStore.loggedInUser.id}}"
+                                 class="btn btn-primary btn-sm"><i class="bi-sort-numeric-up-alt"></i> My Grades
                     </router-link>
                   </div>
                 </div>

@@ -10,6 +10,7 @@ import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
 import AppButton from "@/components/app/AppButton.vue";
 import {useAppToast} from "@/composables/useAppToast.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -58,7 +59,6 @@ onMounted(async () => {
   new DataTablesCore("#adminTable")
   console.log("img url " + import.meta.env.VITE_IMG_URL)
 })
-
 </script>
 
 <template>
@@ -66,7 +66,9 @@ onMounted(async () => {
 
   <div class="card mt-3">
     <a>
-      <router-link :to="{name:'create-admin'}" class="btn btn-outline-primary float-end m-3">
+      <router-link :to="{name:'create-admin'}"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+                   class="btn btn-outline-primary float-end m-3">
         Create a new Administrator
       </router-link>
     </a>
@@ -105,19 +107,24 @@ onMounted(async () => {
             <td>{{ admin.department }}</td>
             <td>{{ admin.country }}</td>
             <td>
-              <router-link :to="{name:'admin-details', params:{id:admin.id}}" class="btn btn-info btn-sm me-1">
+              <router-link :to="{name:'admin-details', params:{id:admin.id}}"
+                           v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
+                           class="btn btn-info btn-sm me-1">
                 <i class="bi bi-info-circle"></i>
               </router-link>
 
               <router-link
                   :to="{name:'edit-admin', params:{id:admin.id}}"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
                   class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
               </router-link>
 
               <app-button
-                  v-if="authStore.loggedInUser.id !== admin.id"
+                  v-if="authStore.loggedInUser.id !== admin.id &&  authStore.loggedInUser?.role === ROLES.ADMIN"
                   class="btn btn-danger btn-sm"
+
                   @click="onDeleteAdmin(admin.id)">
                 <i class="bi bi-trash"></i>
               </app-button>

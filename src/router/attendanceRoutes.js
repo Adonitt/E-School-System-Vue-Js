@@ -1,6 +1,7 @@
 import CrudAttendanceView from "@/views/attendance/CRUDAttendanceView.vue";
 import AttendanceListingView from "@/views/attendance/AttendanceListingView.vue";
 import StudentAttendances from "@/views/student/my/StudentAttendances.vue";
+import {ROLES} from "@/composables/useAdministration.js";
 
 export default [
     {
@@ -8,7 +9,8 @@ export default [
         name: 'attendance',
         component: AttendanceListingView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            roles: [ROLES.ADMIN, ROLES.TEACHER]
         }
     }
     ,
@@ -17,7 +19,8 @@ export default [
         name: 'add-attendance',
         component: CrudAttendanceView,
         meta: {
-            requireAuth: true
+            requireAuth: true,
+            meta: [ROLES.ADMIN]
         }
     },
     {

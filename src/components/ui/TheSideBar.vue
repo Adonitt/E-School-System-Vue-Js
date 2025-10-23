@@ -1,5 +1,8 @@
-<script setup lang="ts">
+<script setup>
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -20,7 +23,10 @@
         </a>
         <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <router-link :to="{name:'admins'}">
+            <router-link :to="{name:'admins'}"
+                         v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
+
+            >
               <i class="bi bi-person"></i>
               <span>Admins</span>
             </router-link>
@@ -45,18 +51,47 @@
         </router-link>
       </li>
 
-      <li class="nav-item ">
+      <li class="nav-item "
+          v-if="authStore.loggedInUser?.role === ROLES.STUDENT">
+        <router-link :to="{name:'student-subjects', params:{id:authStore.loggedInUser?.id}}"
+                     class="nav-link collapsed">
+          <i class="bi bi-journal-text"></i>
+          <span>My Subjects</span>
+        </router-link>
+      </li>
+
+      <li class="nav-item "
+          v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER">
         <router-link :to="{name:'attendance'}" class="nav-link collapsed">
           <i class="bi bi-journal-text"></i>
           <span>Attendances</span>
         </router-link>
       </li>
-      <li class="nav-item ">
+      <li class="nav-item "
+          v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER">
+
         <router-link :to="{name:'grades'}" class="nav-link collapsed">
           <i class="bi-sort-numeric-up-alt"></i>
           <span>Grades</span>
         </router-link>
       </li>
+
+      <li class="nav-item "
+          v-if="authStore.loggedInUser?.role === ROLES.STUDENT">
+        <router-link :to="{name:'student-grades', params:{id:authStore.loggedInUser?.id}}" class="nav-link collapsed">
+          <i class="bi-sort-numeric-up-alt"></i>
+          <span>My Grades</span>
+        </router-link>
+      </li>
+      <li class="nav-item "
+          v-if="authStore.loggedInUser?.role === ROLES.STUDENT">
+        <router-link :to="{name:'student-attendances', params:{id:authStore.loggedInUser?.id}}"
+                     class="nav-link collapsed">
+          <i class="bi bi-journal-text"></i>
+          <span>My Attendances</span>
+        </router-link>
+      </li>
+
 
       <li class="nav-item ">
         <router-link :to="{name:'my-profile'}" class="nav-link collapsed">

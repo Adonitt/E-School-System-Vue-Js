@@ -9,6 +9,8 @@ import {DataTable} from "datatables.net-vue3";
 import DataTablesCore from "datatables.net";
 import DataTablesBS5 from "datatables.net-bs5";
 import {useAppToast} from "@/composables/useAppToast.js";
+import {ROLES} from "@/composables/useAdministration.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -74,7 +76,7 @@ onMounted(async () => {
   await loadStudents()
   new DataTablesCore("#studentTable")
 })
-
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -82,7 +84,9 @@ onMounted(async () => {
 
   <div class="card mt-3">
     <a>
-      <router-link :to="{name:'create-student'}" class="btn btn-outline-primary float-end m-3">
+      <router-link :to="{name:'create-student'}" class="btn btn-outline-primary float-end m-3"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+      >
         Create a new Student
       </router-link>
     </a>
@@ -102,7 +106,8 @@ onMounted(async () => {
             <th scope="col">Country</th>
             <th scope="col">Class Number</th>
             <th scope="col">Status</th>
-            <th scope="col">Actions</th>
+            <th scope="col"
+            >Actions</th>
           </tr>
           </thead>
           <tbody>
@@ -128,18 +133,22 @@ onMounted(async () => {
               {{ student.active ? 'Yes' : 'No' }}
             </span></td>
             <td>
-              <router-link :to="{name:'student-details', params:{id:student.id}}" class="btn btn-info btn-sm me-1">
+              <router-link :to="{name:'student-details', params:{id:student?.id}}" class="btn btn-info btn-sm me-1"
+                           v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
+              >
                 <i class="bi bi-info-circle"></i>
               </router-link>
 
               <router-link
                   :to="{name:'edit-student', params:{id:student.id}}"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
                   class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
               </router-link>
 
               <app-button
                   :class="student.active ? 'btn btn-danger btn-sm' : 'btn btn-success btn-sm'"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
                   @click="student.active ? onDeactivateStudent(student.id) : onActivateStudent(student.id)"
               >
                 <i :class="student.active ? 'bi bi-x-circle' : 'bi bi-check-circle'"></i>

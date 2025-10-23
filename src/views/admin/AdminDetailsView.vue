@@ -7,6 +7,8 @@ import {useRoute, useRouter} from "vue-router";
 import {useAppToast} from "@/composables/useAppToast.js";
 import UserShowDetails from "@/components/user-form/UserShowDetails.vue";
 import AppButton from "@/components/app/AppButton.vue";
+import {ROLES} from "@/composables/useAdministration.js";
+import {useAuthStore} from "@/stores/authStore.js";
 
 const breadcrumbs = [
   {label: 'Dashboard', to: {name: 'home'}},
@@ -45,7 +47,7 @@ const getFullImagePath = (path) => {
   if (!path) return null;
   return "http://localhost:8080/" + path;
 }
-
+const authStore = useAuthStore()
 
 onMounted(() => {
   loadAdmin(route.params.id)
@@ -57,13 +59,11 @@ onMounted(() => {
   <div v-if="admin">
     <user-show-details :user="admin">
       <template #buttons>
-        <router-link class="btn btn-secondary  " :to="{name:'edit-admin', params:{id:route.params.id}}"
+        <router-link class="btn btn-secondary  " v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+                     :to="{name:'edit-admin', params:{id:route.params.id}}"
         >Update Admin
         </router-link>
 
-<!--        <app-button class="btn btn-danger flex" @click="onDeleteAdmin(admin.id)"-->
-<!--        >Delete Admin-->
-<!--        </app-button>-->
       </template>
 
       <template #other-details>

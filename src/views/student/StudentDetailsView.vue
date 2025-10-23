@@ -6,6 +6,8 @@ import {useLoading} from "@/composables/useLoading.js";
 import {useRoute} from "vue-router";
 import StudentService from "@/services/studentService.js";
 import {useAppToast} from "@/composables/useAppToast.js";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 const breadcrumbs = [
   {label: 'Dashboard', to: {name: 'home'}},
@@ -16,7 +18,8 @@ const breadcrumbs = [
 const student = ref(null)
 const {withLoading} = useLoading()
 const route = useRoute()
-const studentId = +route.params.id
+const studentId = ref(null)
+
 
 const loadStudentById = async () => {
   await withLoading(async () => {
@@ -60,7 +63,7 @@ onMounted(async () => {
   await loadStudentById(studentId)
   console.log(student.value.subjectIds)
 })
-
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -70,11 +73,14 @@ onMounted(async () => {
 
     <template #buttons>
       <router-link class="btn btn-secondary  " :to="{name:'edit-student', params:{id: +route.params.id}}"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
       >Update Student
       </router-link>
 
       <button class="btn flex text-white"
               :class="student?.active ? 'bg-danger' : 'bg-success'"
+              v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
               @click="student?.active ? onDeactivateStudent(studentId) : onActivateStudent(studentId)">
         {{ student?.active ? 'Deactivate Student' : 'Activate Student' }}
       </button>
@@ -124,18 +130,25 @@ onMounted(async () => {
           </router-link>
         </div>
 
-        <!--        TODO: // qitu ni link me i pa attendances e studentit-->
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Grades</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.gradeIds }}
-          <a href="#">My Grades</a>
+        <div class="col-lg-9 col-md-8">
+          <router-link :to="{name:'student-grades',params:{id: route.params.id}}"
+                       class="btn btn-primary btn-sm"><i class="bi-sort-numeric-up-alt"></i> Student Grades
+          </router-link>
         </div>
-        <!--        TODO= qitu ni link me i pa grades e veta -->
       </div>
       <div class="row">
         <div class="col-lg-3 col-md-4 label">Class Number</div>
-        <div class="col-lg-9 col-md-8"> {{ student?.classNumber }}</div>
+        <div class="col-lg-9 col-md-8">
+          <router-link
+              v-if="student?.classNumber"
+              :to="{ name: 'students-by-class-number', params:{ classNumber: student.classNumber } }"
+          >
+            {{ student.classNumber }}
+          </router-link>
+        </div>
       </div>
       <div class="row mb-3">
         <div class="col-lg-3 col-md-4 label">Subjects</div>

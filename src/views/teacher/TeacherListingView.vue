@@ -12,6 +12,7 @@ import AdminService from "@/services/adminService.js";
 import TeacherService from "@/services/teacherService.js";
 import {useAppToast} from "@/composables/useAppToast.js";
 import {useRouter} from "vue-router";
+import {ROLES} from "@/composables/useAdministration.js";
 
 DataTable.use(DataTablesCore);
 DataTable.use(DataTablesBS5);
@@ -55,8 +56,6 @@ const onDeleteTeacher = async (id) => {
 }
 
 
-
-
 onMounted(async () => {
   await loadTeachers()
   new DataTablesCore("#teacherTable")
@@ -68,7 +67,9 @@ onMounted(async () => {
   <bread-crumb :items="breadcrumbs"/>
   <div class="card mt-3">
     <a>
-      <router-link :to="{name:'create-teacher'}" class="btn btn-outline-primary float-end m-3">
+      <router-link :to="{name:'create-teacher'}" class="btn btn-outline-primary float-end m-3"
+                   v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+      >
         Create a new Teacher
       </router-link>
     </a>
@@ -113,12 +114,16 @@ onMounted(async () => {
 
               <router-link
                   :to="{name:'edit-teacher', params:{id:teacher.id}}"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
                   class="btn btn-warning btn-sm me-1">
                 <i class="bi bi-pen"></i>
               </router-link>
 
               <app-button
                   class="btn btn-danger btn-sm"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
+
                   @click="onDeleteTeacher(teacher.id)">
                 <i class="bi bi-trash"></i>
               </app-button>

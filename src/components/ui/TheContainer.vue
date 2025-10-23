@@ -1,84 +1,40 @@
-<script setup >
-import {useAuthStore} from "@/stores/authStore.js";
+<script setup>
+import { useAuthStore } from "@/stores/authStore.js";
 
-
+const authStore = useAuthStore();
+const userName = authStore.loggedInUser?.fullName || "Student";
 </script>
 
 <template>
-
-  <div class="pagetitle">
-    <h1>Dashboard</h1>
-    <!--      <nav>-->
-    <!--        <ol class="breadcrumb">-->
-    <!--          <li class="breadcrumb-item"><a href="index.html">Home</a></li>-->
-    <!--          <li class="breadcrumb-item active">Dashboard</li>-->
-    <!--        </ol>-->
-    <!--      </nav>-->
-  </div>
-
-  <section class="section dashboard">
-    <div class="row">
-
-      <div class="col-lg-8">
-        <div class="row">
-
-
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-
-              <div class="card-body">
-                <h5 class="card-title">Admins </h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>145</h6>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-
-              <div class="card-body">
-                <h5 class="card-title">Teachers </h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-pen"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>145</h6>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          <div class="col-xxl-4 col-md-6">
-            <div class="card info-card sales-card">
-
-              <div class="card-body">
-                <h5 class="card-title">Students </h5>
-
-                <div class="d-flex align-items-center">
-                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                    <i class="bi bi-person-badge-fill"></i>
-                  </div>
-                  <div class="ps-3">
-                    <h6>145</h6>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
+  <section class="welcome-page vh-100 d-flex align-items-center justify-content-center">
+    <div class="text-center animate-fade-in">
+      <h1 class="display-1 fw-bold mb-3 text-white">Welcome, {{ userName }}!</h1>
+      <p class="lead text-white-75">Get ready to explore your school dashboard and discover amazing features!</p>
     </div>
   </section>
 </template>
+
+<style scoped>
+.welcome-page {
+  background: linear-gradient(135deg, #9fa6bd 0%, #f3f0f0 100%);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-white-75 {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.animate-fade-in {
+  opacity: 0;
+  animation: fadeIn 1.5s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+</style>
