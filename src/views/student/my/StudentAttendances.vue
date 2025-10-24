@@ -87,7 +87,6 @@ const breadcrumbs = [
   {label: "Student Attendances"}
 ];
 </script>
-
 <template>
   <bread-crumb :items="breadcrumbs"/>
 
@@ -95,97 +94,115 @@ const breadcrumbs = [
     <div class="card-header d-flex flex-wrap gap-2 align-items-center">
       <span v-if="student">{{ student.name + ' ' + student.surname }}'s Attendances</span>
       <span v-else>Loading...</span>
-      <input type="text" v-model="search" placeholder="Filter by subject..." class="form-control form-control-sm"/>
+      <input type="text" v-model="search" placeholder="Filter by subject..." class="form-control form-control-sm flex-grow-1"/>
       <input type="date" v-model="filterDate" class="form-control form-control-sm"/>
     </div>
 
     <div class="card-body p-0">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="table-light">
-        <tr>
-          <th>#</th>
-          <th>Subject</th>
-          <th>Date</th>
-          <th>Present</th>
-          <th>Notes</th>
-          <th
-              v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
-          >Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="filteredAttendances.length === 0">
-          <td colspan="6" class="text-center py-3 text-muted">No attendance found.</td>
-        </tr>
-        <tr v-for="(att, index) in filteredAttendances" :key="att.id">
-          <td>{{ index + 1 }}</td>
-          <td>
-            <router-link :to="{name:'subject-details',params:{id:att.subjectId}}">{{ att.subjectName }}
-
-            </router-link>
-          </td>
-          <td>{{ att.date }}</td>
-          <td>
-              <span :class="att.present ? 'badge bg-success' : 'badge bg-danger'">
-                {{ att.present ? 'Present' : 'Absent' }}
-              </span>
-          </td>
-          <td>{{ att.notes }}</td>
-          <td>
-            <button class="btn btn-sm btn-warning me-2" @click="openEditModal(att)"
-                    v-if="authStore.loggedInUser?.role === ROLES.ADMIN"
-            >
-              <i class="bi bi-pencil"></i> Edit
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div v-if="showEditModal" class="modal fade show d-block" tabindex="-1">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit Attendance</h5>
-          <button type="button" class="btn-close" @click="showEditModal=false"></button>
-        </div>
-        <div class="modal-body">
-          <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" v-model="editingAttendance.present" id="editPresent">
-            <label class="form-check-label" for="editPresent">Present</label>
-          </div>
-          <div class="mb-3">
-            <label for="editNotes" class="form-label">Notes</label>
-            <textarea class="form-control" id="editNotes" rows="3" v-model="editingAttendance.notes"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" @click="showEditModal=false">Cancel</button>
-          <button class="btn btn-primary" @click="updateAttendance">Save Changes</button>
-        </div>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Subject</th>
+            <th>Date</th>
+            <th>Present</th>
+            <th>Notes</th>
+            <th v-if="authStore.loggedInUser?.role === ROLES.ADMIN">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-if="filteredAttendances.length === 0">
+            <td colspan="6" class="text-center py-3 text-muted">No attendance found.</td>
+          </tr>
+          <tr v-for="(att, index) in filteredAttendances" :key="att.id">
+            <td>{{ index + 1 }}</td>
+            <td>
+              <router-link :to="{name:'subject-details',params:{id:att.subjectId}}">{{ att.subjectName }}</router-link>
+            </td>
+            <td>{{ att.date }}</td>
+            <td>
+                <span :class="att.present ? 'badge bg-success' : 'badge bg-danger'">
+                  {{ att.present ? 'Present' : 'Absent' }}
+                </span>
+            </td>
+            <td>{{ att.notes }}</td>
+            <td>
+              <button class="btn btn-sm btn-warning me-2" @click="openEditModal(att)"
+                      v-if="authStore.loggedInUser?.role === ROLES.ADMIN">
+                <i class="bi bi-pencil"></i> Edit
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
-  <div v-if="showEditModal" class="modal-backdrop fade show"></div>
+
+  <!-- Modal -->
+  <div v-if="showEditModal" class="modal-backdrop d-flex justify-content-center align-items-center">
+    <div class="modal-content p-4 shadow" style="min-width: 400px; width: 90%;">
+      <h5 class="mb-3">Edit Attendance</h5>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" v-model="editingAttendance.present" id="editPresent">
+        <label class="form-check-label" for="editPresent">Present</label>
+      </div>
+      <div class="mb-3">
+        <label for="editNotes" class="form-label">Notes</label>
+        <textarea class="form-control" id="editNotes" rows="3" v-model="editingAttendance.notes"></textarea>
+      </div>
+      <div class="text-end mt-3">
+        <button class="btn btn-secondary me-2" @click="showEditModal=false">Cancel</button>
+        <button class="btn btn-primary" @click="updateAttendance">Save Changes</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 .card {
   border-radius: 0.75rem;
 }
-
 .card-header {
   font-weight: 600;
   font-size: 1.1rem;
+  gap: 0.5rem;
+}
+.table-responsive {
+  overflow-x: auto;
 }
 
+/* Modal responsive */
 .modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
   z-index: 1040;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal-content {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-.modal {
-  z-index: 1050;
+/* Mobile tweaks */
+@media (max-width: 576px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .modal-content {
+    width: 90%;
+  }
 }
 </style>

@@ -26,18 +26,23 @@ console.log(authStore.loggedInUser)
         <img src="../../assets/img/schicon.png" alt="School Icon" style="width: 30px;height:30px"/>
         <span class="d-none d-lg-block">E-School System</span>
       </router-link>
+
+      <button
+          class="navbar-toggler sidenav-toggler"
+          @click="$emit('toggle-sidebar')"
+          type="button"
+      >
+      <span class="navbar-toggler-icon">
       <i class="bi bi-list toggle-sidebar-btn"></i>
+      </span>
+      </button>
     </div>
 
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
 
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li>
+
 
 
 

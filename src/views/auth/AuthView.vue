@@ -79,8 +79,8 @@ const handleSubmit = async () => {
                            required>
 
                   </div>
-                  <a href="#">Forgot Password</a>
-
+<!--                  <a href="#">Forgot Password</a>-->
+<br>
                   <div class="col-12">
                     <button class="btn btn-primary w-100" type="submit">Login</button>
                   </div>

@@ -58,7 +58,6 @@ const filteredAttendances = computed(() => {
 
 onMounted(loadAllAttendances);
 </script>
-
 <template>
   <bread-crumb :items="breadcrumbs"/>
 
@@ -71,7 +70,7 @@ onMounted(loadAllAttendances);
             v-model="search"
             type="text"
             placeholder="Search by student or subject..."
-            class="form-control form-control-sm"
+            class="form-control form-control-sm flex-grow-1"
         />
         <input
             v-model="filterDate"
@@ -82,64 +81,99 @@ onMounted(loadAllAttendances);
     </div>
 
     <div class="card-body p-0">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="table-light">
-        <tr>
-          <th scope="col" style="width: 5%">#</th>
-          <th scope="col" style="width: 25%">Student</th>
-          <th scope="col" style="width: 25%">Subject</th>
-          <th scope="col" style="width: 15%">Present</th>
-          <th scope="col" style="width: 15%">Date</th>
-          <th scope="col" style="width: 15%">Notes</th>
-          <th scope="col" style="width: 15%">Details</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="filteredAttendances.length === 0">
-          <td colspan="7" class="text-center py-3 text-muted">
-            No attendance records found.
-          </td>
-        </tr>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+          <tr>
+            <th scope="col" style="width: 5%">#</th>
+            <th scope="col" style="width: 25%">Student</th>
+            <th scope="col" style="width: 25%">Subject</th>
+            <th scope="col" style="width: 15%">Present</th>
+            <th scope="col" style="width: 15%">Date</th>
+            <th scope="col" style="width: 15%">Notes</th>
+            <th scope="col" style="width: 15%">Details</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-if="filteredAttendances.length === 0">
+            <td colspan="7" class="text-center py-3 text-muted">
+              No attendance records found.
+            </td>
+          </tr>
 
-        <tr v-for="(item, index) in filteredAttendances" :key="item.id">
-          <td>{{ index + 1 }}</td>
-          <td>
-            <router-link
-                :to="{ name: 'student-details', params: { id: item.studentId } }"
-                class="text-decoration-none fw-semibold"
-            >
-              {{ item.studentName }}
-            </router-link>
-          </td>
-
-          <td>
-            <router-link
-                :to="{ name: 'subject-details', params: { id: item.subjectId } }"
-                class="text-decoration-none fw-semibold"
-            >
-              {{ item.subjectName }}
-            </router-link>
-          </td>
-
-          <td>
-              <span
-                  class="badge px-3 py-2"
-                  :class="item.present ? 'bg-success' : 'bg-danger'"
+          <tr v-for="(item, index) in filteredAttendances" :key="item.id">
+            <td>{{ index + 1 }}</td>
+            <td>
+              <router-link
+                  :to="{ name: 'student-details', params: { id: item.studentId } }"
+                  class="text-decoration-none fw-semibold"
               >
-                {{ item.present ? 'Present' : 'Absent' }}
-              </span>
-          </td>
+                {{ item.studentName }}
+              </router-link>
+            </td>
 
-          <td>{{ item.date }}</td>
-          <td>{{ item.notes }}</td>
-          <td>
-            <router-link class="btn btn-primary" :to="{name:'student-attendances',params:{id:item.studentId}}">Details</router-link>
-          </td>
+            <td>
+              <router-link
+                  :to="{ name: 'subject-details', params: { id: item.subjectId } }"
+                  class="text-decoration-none fw-semibold"
+              >
+                {{ item.subjectName }}
+              </router-link>
+            </td>
 
+            <td>
+                <span
+                    class="badge px-3 py-2"
+                    :class="item.present ? 'bg-success' : 'bg-danger'"
+                >
+                  {{ item.present ? 'Present' : 'Absent' }}
+                </span>
+            </td>
 
-        </tr>
-        </tbody>
-      </table>
+            <td>{{ item.date }}</td>
+            <td>{{ item.notes }}</td>
+            <td>
+              <router-link class="btn btn-primary btn-sm" :to="{name:'student-attendances',params:{id:item.studentId}}">Details</router-link>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  border-radius: 0.75rem;
+}
+.card-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  gap: 0.5rem;
+}
+
+/* Responsive tweaks */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.badge {
+  font-size: 0.8rem;
+  padding: 0.35em 0.6em;
+}
+
+@media (max-width: 576px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  th, td {
+    font-size: 0.85rem;
+  }
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+</style>

@@ -133,11 +133,14 @@ const authStore = useAuthStore()
               {{ student.active ? 'Yes' : 'No' }}
             </span></td>
             <td>
-              <router-link :to="{name:'student-details', params:{id:student?.id}}" class="btn btn-info btn-sm me-1"
-                           v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
+              <router-link
+                  :to="{ name: 'student-details', params: { id: student.id } }"
+                  class="btn btn-info btn-sm me-1"
+                  v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER"
               >
                 <i class="bi bi-info-circle"></i>
               </router-link>
+
 
               <router-link
                   :to="{name:'edit-student', params:{id:student.id}}"

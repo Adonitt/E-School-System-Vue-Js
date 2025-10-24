@@ -18,7 +18,7 @@ const breadcrumbs = [
 const student = ref(null)
 const {withLoading} = useLoading()
 const route = useRoute()
-const studentId = ref(null)
+const studentId = +route.params.id
 
 
 const loadStudentById = async () => {
@@ -26,6 +26,7 @@ const loadStudentById = async () => {
     student.value = await StudentService.getStudentById(studentId)
   })
 }
+
 const {showDialog, showSuccess, showError} = useAppToast()
 
 const onDeactivateStudent = async (id) => {
@@ -123,7 +124,7 @@ const authStore = useAuthStore()
         <div class="col-lg-3 col-md-4 label">Attendance Record</div>
         <div class="col-lg-9 col-md-8">
           <router-link
-              :to="{ name: 'student-attendances', params: { id: route.params.id } }"
+              :to="{ name: 'student-attendances', params: { id:+route.params.id } }"
               class="btn btn-primary btn-sm"
           >
             <i class="bi bi-journal-text me-1"></i> View Attendances

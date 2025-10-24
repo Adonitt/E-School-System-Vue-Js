@@ -72,7 +72,7 @@ onMounted(async () => {
                 class="btn btn-sm btn-primary"
                 v-if="authStore.loggedInUser?.role === ROLES.ADMIN || authStore.loggedInUser?.role === ROLES.TEACHER "
             >
-              View
+              View Student
             </router-link>
           </td>
         </tr>

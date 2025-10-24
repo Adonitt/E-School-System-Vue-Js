@@ -49,6 +49,7 @@ const loadGrades = async () => {
             return {
               ...g,
               subjectName: subject.name,
+              subjectTeacherIds: subject?.teacherIds
             };
           })
       );
@@ -135,7 +136,6 @@ onMounted(async () => {
   await loadStudent();
 });
 </script>
-
 <template>
   <bread-crumb :items="breadcrumbs"/>
 
@@ -147,60 +147,60 @@ onMounted(async () => {
           type="text"
           v-model="search"
           placeholder="Filter by subject..."
-          class="form-control form-control-sm"
+          class="form-control form-control-sm flex-grow-1"
       />
     </div>
 
     <div class="card-body p-0">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="table-light">
-        <tr>
-          <th>#</th>
-          <th>Subject</th>
-          <th>Grade</th>
-          <th>Semester</th>
-          <th>Date</th>
-          <th
-              v-if="authStore.loggedInUser?.role === ROLES.TEACHER"
-          >Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="filteredGrades.length === 0">
-          <td colspan="6" class="text-center py-3 text-muted">No grades found.</td>
-        </tr>
-        <tr v-for="(g, index) in filteredGrades" :key="g.id">
-          <td>{{ g.id }}</td>
-          <td>
-            <router-link :to="{ name: 'subject-details', params: { id: g.subjectId } }">
-              {{ g.subjectName }}
-            </router-link>
-          </td>
-          <td><span class="badge bg-primary">{{ g.grade }}</span></td>
-          <td>{{ g.semester }}</td>
-          <td>{{ g.dateGiven }}</td>
-          <td>
-            <button class="btn btn-sm btn-warning d-flex align-items-center"
-                    v-if="authStore.loggedInUser?.role === ROLES.TEACHER"
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Semester</th>
+            <th>Date</th>
+            <th v-if="authStore.loggedInUser?.role === ROLES.TEACHER "
+            >Action
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-if="filteredGrades.length === 0">
+            <td colspan="6" class="text-center py-3 text-muted">No grades found.</td>
+          </tr>
+          <tr v-for="(g, index) in filteredGrades" :key="g.id">
+            <td>{{ g.id }}</td>
+            <td>
+              <router-link :to="{ name: 'subject-details', params: { id: g.subjectId } }">
+                {{ g.subjectName }}
+              </router-link>
+            </td>
+            <td><span class="badge bg-primary">{{ g.grade }}</span></td>
+            <td>{{ g.semester }}</td>
+            <td>{{ g.dateGiven }}</td>
+            <td>
+              <button
+                  class="btn btn-sm btn-warning d-flex align-items-center"
+                  v-if="authStore.loggedInUser?.role === ROLES.TEACHER && g.subjectTeacherIds?.includes(authStore.loggedInUser?.id)"
+                  @click="openEditModal(g)"
+              >
+                <i class="bi bi-pencil-fill me-1"></i>Edit
+              </button>
 
-                    @click="openEditModal(g)">
-              <i class="bi bi-pencil-fill me-1"></i>Edit
-
-
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
-  <div v-if="showEditModal" class="modal-backdrop d-flex justify-content-center align-items-center">
-    <div class="modal-content p-4 bg-white shadow rounded" style="min-width: 400px;">
-      <h5 class="mb-3">
-        Edit Grade: #{{ editingGrade?.id }}
-      </h5>
-
+  <!-- Modal -->
+  <div v-if="showEditModal" class="modal-backdrop">
+    <div class="modal-content p-4 shadow">
+      <h5 class="mb-3">Edit Grade: #{{ editingGrade?.id }}</h5>
       <form @submit.prevent="updateGrade" class="row g-3">
         <app-select
             id="grade"
@@ -209,7 +209,6 @@ onMounted(async () => {
             v-model="editingGrade.grade"
             placeholder="Choose grade..."
         />
-
         <app-input
             id="attendancePercentageUsed"
             label="Attendance %"
@@ -220,7 +219,6 @@ onMounted(async () => {
             max="100"
             placeholder="Enter attendance"
         />
-
         <app-select
             id="semester"
             :options="semesterOptions"
@@ -228,14 +226,8 @@ onMounted(async () => {
             v-model="editingGrade.semester"
             placeholder="Choose semester..."
         />
-
-
         <div class="col-12 text-end mt-3">
-          <button
-              type="button"
-              class="btn btn-secondary me-2"
-              @click="showEditModal = false"
-          >
+          <button type="button" class="btn btn-secondary me-2" @click="showEditModal = false">
             Cancel
           </button>
           <button type="submit" class="btn btn-primary">Save</button>
@@ -253,8 +245,14 @@ onMounted(async () => {
 .card-header {
   font-weight: 600;
   font-size: 1.1rem;
+  gap: 0.5rem;
 }
 
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Modal responsive */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -276,4 +274,17 @@ onMounted(async () => {
   max-width: 400px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
+
+/* Mobile tweaks */
+@media (max-width: 576px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}
 </style>
+

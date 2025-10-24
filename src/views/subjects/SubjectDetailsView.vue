@@ -52,6 +52,7 @@ const authStore = useAuthStore()
 onMounted(async () => {
   await loadSubject(subjectId);
   console.log(subject.value.students)
+  console.log(subject.value)
 });
 </script>
 
@@ -175,12 +176,15 @@ onMounted(async () => {
           <i class="bi bi-clipboard-plus"></i> Add Attendance
         </router-link>
 
-        <router-link :to="{name:'add-grade', query: {subjectId: subject?.id}}"
-                     v-if="authStore.loggedInUser?.role === ROLES.TEACHER"
-
-                     class="btn btn-primary"
-        >Add Grades
+        <router-link
+            :to="{name:'add-grade', query: {subjectId: subject?.id}}"
+            v-if="authStore.loggedInUser?.role === ROLES.TEACHER && subject?.teacherIds?.includes(authStore.loggedInUser?.id)"
+            class="btn btn-primary"
+        >
+          Add Grades
         </router-link>
+
+
       </div>
 
     </div>

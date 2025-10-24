@@ -8,6 +8,8 @@ import AppInput from "@/components/app/AppInput.vue";
 import SubjectService from "@/services/subjectService.js";
 import AppSelect from "@/components/app/AppSelect.vue";
 import GradesService from "@/services/gradesService.js";
+import {useAuthStore} from "@/stores/authStore.js";
+import {ROLES} from "@/composables/useAdministration.js";
 
 const route = useRoute()
 const breadcrumbs = [
@@ -175,9 +177,14 @@ const removeGrade = async (grade) => {
   }
 
 }
+
+
+const authStore = useAuthStore()
 onMounted(async () => {
   await loadSubject()
   await loadStudentsWithGrades()
+
+  console.log(studentsWithGrades.value)
 })
 </script>
 
@@ -281,11 +288,14 @@ onMounted(async () => {
           <td>
             <button
                 class="btn btn-sm btn-warning d-flex align-items-center"
+                v-if="authStore.loggedInUser?.role === ROLES.TEACHER && grade.teacherId === authStore.loggedInUser?.id"
+
                 @click="openEditModal(grade)">
               <i class="bi bi-pencil-fill me-1"></i>
             </button>
             <button
                 @click="removeGrade(grade)"
+                v-if="authStore.loggedInUser?.role === ROLES.TEACHER && grade.teacherId === authStore.loggedInUser?.id"
                 class="btn btn-sm btn-danger d-flex align-items-center"
             >
               <i class="bi bi-trash"></i>

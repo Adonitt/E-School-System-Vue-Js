@@ -41,7 +41,8 @@ export default [
             requireAuth: true,
             roles: [ROLES.ADMIN, ROLES.TEACHER]
         }
-    }, {
+    },
+    {
         path: '/students/details/:id/my-subjects',
         name: 'student-subjects',
         component: StudentSubjectsView,

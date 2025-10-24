@@ -52,64 +52,94 @@ const filteredGrades = computed(() => {
   )
 })
 </script>
-
 <template>
   <bread-crumb :items="breadcrumbs"/>
 
   <div class="card shadow-sm mt-4">
     <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
       <h5 class="mb-0">Grade Listing</h5>
-    </div>
       <input
           v-model="search"
           type="text"
           placeholder="Search by student or subject..."
-          class="form-control form-control-sm mt-2 mt-md-0  p-2"
+          class="form-control form-control-sm mt-2 mt-md-0 p-2 flex-grow-1"
       />
-    <br>
+    </div>
 
     <div class="card-body p-0">
-      <table class="table table-hover mb-0 align-middle">
-        <thead class="table-light">
-        <tr>
-          <th>#</th>
-          <th>Student</th>
-          <th>Subject</th>
-          <th>Grade</th>
-          <th>Semester</th>
-          <th>Teacher</th>
-          <th>Attendance</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-if="filteredGrades.length === 0">
-          <td colspan="8" class="text-center py-3 text-muted">
-            No records found.
-          </td>
-        </tr>
-        <tr v-for="grade in filteredGrades" :key="grade.id">
-          <td>{{ grade.id }}</td>
-          <td>
-            <router-link :to="{ name: 'student-details', params: { id: grade.studentId } }">
-              {{ grade.studentName }}
-            </router-link>
-          </td>
-          <td>
-            <router-link :to="{ name: 'subject-details', params: { id: grade.subjectId } }">
-              {{ grade.subjectName }}
-            </router-link>
-          </td>
-          <td>{{ grade.grade }}</td>
-          <td>{{ grade.semester }}</td>
-          <td>{{ grade.teacher }}</td>
-          <td>{{ grade.attendancePercentageUsed }}%</td>
-          <td>
-            <router-link :to="{name:'student-grades', params:{id:grade.studentId}}">Details</router-link>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0 align-middle">
+          <thead class="table-light">
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Subject</th>
+            <th>Grade</th>
+            <th>Semester</th>
+            <th>Teacher</th>
+            <th>Attendance</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-if="filteredGrades.length === 0">
+            <td colspan="8" class="text-center py-3 text-muted">
+              No records found.
+            </td>
+          </tr>
+          <tr v-for="grade in filteredGrades" :key="grade.id">
+            <td>{{ grade.id }}</td>
+            <td>
+              <router-link :to="{ name: 'student-details', params: { id: grade.studentId } }">
+                {{ grade.studentName }}
+              </router-link>
+            </td>
+            <td>
+              <router-link :to="{ name: 'subject-details', params: { id: grade.subjectId } }">
+                {{ grade.subjectName }}
+              </router-link>
+            </td>
+            <td>{{ grade.grade }}</td>
+            <td>{{ grade.semester }}</td>
+            <td>{{ grade.teacher }}</td>
+            <td>{{ grade.attendancePercentageUsed }}%</td>
+            <td>
+              <router-link class="btn btn-primary btn-sm" :to="{name:'student-grades', params:{id:grade.studentId}}">Details</router-link>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
+
+<style scoped>
+.card {
+  border-radius: 0.75rem;
+}
+
+.card-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  gap: 0.5rem;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 576px) {
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  th, td {
+    font-size: 0.85rem;
+  }
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+</style>
